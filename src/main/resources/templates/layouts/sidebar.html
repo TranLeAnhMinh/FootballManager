@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sidebar</title>
+  <link rel="stylesheet" th:href="@{/css/home.css}" />
+
+  <!-- Font Awesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+</head>
+<body>
+  <div class="sidebar" th:fragment="sidebar">
+    <div class="logo">
+      <img th:src="@{/images/footballmanager.svg}" alt="Logo" />
+    </div>
+
+    <ul class="menu">
+      <!-- ✅ Home -->
+      <li>
+        <a th:href="@{/user/home}"
+           th:classappend="${activePage == 'home'} ? 'active'">
+          <i class="fa fa-home"></i>
+          <span th:text="#{sidebar.homepage}">Home Page</span>
+        </a>
+      </li>
+
+      <!-- ✅ User Information -->
+      <li>
+        <a th:href="@{/user/userinformation}"
+           th:classappend="${activePage == 'userinformation'} ? 'active'">
+          <i class="fa fa-user"></i>
+          <span th:text="#{sidebar.users}">User Information</span>
+        </a>
+      </li>
+
+      <!-- ✅ Booking History -->
+      <li>
+        <a th:href="@{/user/bookinghistory}"
+           th:classappend="${activePage == 'bookinghistory'} ? 'active'">
+          <i class="fa fa-calendar"></i>
+          <span th:text="#{sidebar.bookings}">Bookings</span>
+        </a>
+      </li>
+
+      <!-- 🟡 Facilities (chưa có trang → giữ nguyên) -->
+      <li>
+        <a href="#">
+          <i class="fa fa-building"></i>
+          <span th:text="#{sidebar.facilities}">Facilities</span>
+        </a>
+      </li>
+
+      <!-- 🟡 Events (chưa có trang → giữ nguyên) -->
+      <li>
+        <a href="#">
+          <i class="fa fa-calendar-check"></i>
+          <span th:text="#{sidebar.events}">Events</span>
+        </a>
+      </li>
+
+      <!-- 🟡 Calendar (chưa có trang → giữ nguyên) -->
+      <li>
+        <a href="#">
+          <i class="fa fa-users"></i>
+          <span th:text="#{sidebar.calendar}">Calendar</span>
+        </a>
+      </li>
+
+      <!-- ✅ Logout (không cần active) -->
+      <li>
+        <a href="#" onclick="logout()">
+          <i class="fa fa-sign-out-alt"></i>
+          <span th:text="#{sidebar.logout}">Logout</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</body>
+</html>

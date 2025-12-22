@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title th:text="#{sidebar.homepage}">Sidebar - Admin System</title>
+
+  <link rel="stylesheet" th:href="@{/css/home.css}" />
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+
+<body>
+<div class="sidebar" th:fragment="adminSystemSidebar">
+
+  <!-- Logo -->
+  <div class="logo">
+    <img th:src="@{/images/footballmanager.svg}" alt="Logo" />
+  </div>
+
+  <ul class="menu">
+
+    <!-- 🟢 Home -->
+    <li>
+      <a th:href="@{/adminsystem/home}"
+         th:classappend="${activePage} == 'systemHome' ? 'active' : ''">
+        <i class="fa fa-home"></i>
+        <span th:text="#{sidebar.homepage}">Trang chủ</span>
+      </a>
+    </li>
+
+    <!-- 🟢 Quản lý chi nhánh -->
+    <li>
+      <a th:href="@{/adminsystem/branches}"
+         th:classappend="${activePage} == 'branchManagement' ? 'active' : ''">
+        <i class="fa fa-code-branch"></i>
+        <span th:text="#{sidebar.admin.branches}">Quản lý chi nhánh</span>
+      </a>
+    </li>
+
+    <!-- 🟢 Quản lý người dùng -->
+    <li>
+  <a th:href="@{/adminsystem/users}"
+     th:classappend="${activePage} == 'systemUsers' ? 'active' : ''">
+    <i class="fa fa-users"></i>
+    <span th:text="#{sidebar.admin.users}">Quản lý người dùng</span>
+  </a>
+</li>
+
+    <!-- 🟢 Quản lý voucher -->
+    <li>
+  <a th:href="@{/adminsystem/vouchers}"
+     th:classappend="${activePage} == 'voucherManagement' ? 'active' : ''">
+    <i class="fa fa-ticket-alt"></i>
+    <span th:text="#{sidebar.admin.vouchers}">Voucher</span>
+  </a>
+</li>
+
+    <!-- 🟡 Báo cáo hệ thống
+    <li>
+      <a href="#">
+        <i class="fa fa-chart-bar"></i>
+        <span th:text="#{sidebar.admin.reports}">Báo cáo hệ thống</span>
+      </a>
+    </li> -->
+
+    <!-- 🟢 Logout -->
+    <li>
+      <a href="#" onclick="logout()">
+        <i class="fa fa-sign-out-alt"></i>
+        <span th:text="#{sidebar.logout}">Đăng xuất</span>
+      </a>
+    </li>
+
+  </ul>
+
+</div>
+</body>
+</html>

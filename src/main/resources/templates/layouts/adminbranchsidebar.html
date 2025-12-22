@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sidebar - Admin Branch</title>
+  <link rel="stylesheet" th:href="@{/css/home.css}" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+</head>
+<body>
+  <div class="sidebar" th:fragment="adminSidebar">
+    <!-- Logo -->
+    <div class="logo">
+      <img th:src="@{/images/footballmanager.svg}" alt="Logo" />
+    </div>
+
+    <ul class="menu">
+      <!-- ✅ Home -->
+      <li>
+        <a th:href="@{/admin/home}"
+           th:classappend="${activePage == 'adminHome'} ? 'active'">
+          <i class="fa fa-home"></i>
+          <span th:text="#{sidebar.admin.home}">Home</span>
+        </a>
+      </li>
+
+      <!-- ✅ Dashboard -->
+      <li>
+        <a th:href="@{/admin/revenue}"
+            th:classappend="${activePage == 'revenue'} ? 'active'">
+          <i class="fa fa-chart-line"></i>
+          <span th:text="#{sidebar.admin.dashboard}">Dashboard</span>
+        </a>
+      </li>
+
+      <!-- ✅ Booking History -->
+      <li>
+        <a th:href="@{/admin/bookings}"
+           th:classappend="${activePage == 'bookings'} ? 'active'">
+          <i class="fa fa-calendar-check"></i>
+          <span th:text="#{sidebar.admin.bookings}">Bookings</span>
+        </a>
+      </li>
+
+      <!-- ✅ Maintenance Management -->
+      <li>
+        <a th:href="@{/admin/maintenance/history}"
+          th:classappend="${activePage == 'maintenancehistory'} ? 'active'">
+          <i class="fa fa-tools"></i>
+          <span th:text="#{sidebar.admin.maintenance}">Maintenance</span>
+        </a>
+      </li>
+
+      <!-- ✅ Logout -->
+      <li>
+        <a href="#" onclick="logout()">
+          <i class="fa fa-sign-out-alt"></i>
+          <span th:text="#{sidebar.admin.logout}">Logout</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</body>
+</html>

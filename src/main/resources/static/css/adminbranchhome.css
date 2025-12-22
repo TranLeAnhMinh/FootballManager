@@ -1,0 +1,116 @@
+/* ===== Layout ===== */
+.admin-pitch-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-top: 20px;
+}
+
+/* ===== Card ===== */
+.admin-pitch-card {
+  width: 100%;
+  display: flex;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.admin-pitch-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* ===== Image ===== */
+.pitch-image img {
+  width: 260px;
+  height: 160px;
+  object-fit: cover;
+  border-right: 3px solid #00aaff;
+}
+
+/* ===== Content ===== */
+.pitch-content {
+  flex: 1;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.pitch-content h4 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #111;
+  margin: 0 0 8px;
+}
+
+.pitch-content p {
+  margin: 4px 0;
+  color: #333;
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+/* ===== Icon style ===== */
+.location i {
+  color: #00aaff;
+  margin-right: 6px;
+}
+
+/* ===== Status tag ===== */
+.status-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+
+.status-tag.active {
+  background-color: #e8f8f0;
+  color: #2ecc71;
+}
+
+.status-tag.inactive {
+  background-color: #fdeaea;
+  color: #e74c3c;
+}
+
+/* ===== Rating ===== */
+.rating {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  font-weight: 500;
+  color: #444;
+}
+
+.rating i {
+  color: #00aaff;
+  font-size: 18px;
+}
+
+/* ===== Titles & messages ===== */
+.pitch-type-title {
+  margin-top: 28px;
+  font-size: 22px;
+  font-weight: 700;
+  border-left: 4px solid #00aaff;
+  padding-left: 10px;
+  color: #222;
+}
+
+.loading-text,
+.error-text,
+.empty-text {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 16px;
+  color: #666;
+  font-weight: 500;
+}

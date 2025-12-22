@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Booking Summary</title>
+
+  <link rel="icon" href="/favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/booking-summary.css">
+</head>
+<body>
+<div class="summary-container" id="summaryBox">
+  <p>Loading...</p>
+</div>
+
+<script th:inline="javascript">
+  window.i18n = {
+    "booking.summary.title": /*[[#{booking.summary.title}]]*/ "Booking Summary",
+    "booking.summary.pitch": /*[[#{booking.summary.pitch}]]*/ "Pitch",
+    "booking.summary.branch": /*[[#{booking.summary.branch}]]*/ "Branch",
+    "booking.summary.user": /*[[#{booking.summary.user}]]*/ "User",
+    "booking.summary.date": /*[[#{booking.summary.date}]]*/ "Date",
+    "booking.summary.status": /*[[#{booking.summary.status}]]*/ "Status",
+    "booking.summary.note": /*[[#{booking.summary.note}]]*/ "Note",
+    "booking.summary.slots": /*[[#{booking.summary.slots}]]*/ "Booked Slots",
+    "booking.summary.pricing": /*[[#{booking.summary.pricing}]]*/ "Pricing",
+    "booking.summary.price.base": /*[[#{booking.summary.price.base}]]*/ "Base Price",
+    "booking.summary.price.discount": /*[[#{booking.summary.price.discount}]]*/ "Voucher Discount",
+    "booking.summary.price.final": /*[[#{booking.summary.price.final}]]*/ "Final Price",
+    "booking.summary.payButton": /*[[#{booking.summary.payButton}]]*/ "Proceed to Payment",
+
+    // status mapping
+    "status.pending": /*[[#{status.pending}]]*/ "Pending",
+    "status.approved": /*[[#{status.approved}]]*/ "Approved",
+    "status.paid": /*[[#{status.paid}]]*/ "Paid",
+    "status.checked_in": /*[[#{status.checked_in}]]*/ "Checked In",
+    "status.cancelled": /*[[#{status.cancelled}]]*/ "Cancelled",
+    "status.no_show": /*[[#{status.no_show}]]*/ "No Show",
+
+    // error
+    "error": /*[[#{branch.error}]]*/ "Error loading data"
+  };
+</script>
+
+<script src="/js/bookingsummarypage.js" defer></script>
+</body>
+</html>

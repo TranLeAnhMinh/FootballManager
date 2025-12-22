@@ -1,0 +1,117 @@
+/* Toàn trang */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Container chung cho login & register */
+.auth-container {
+    display: flex;
+    width: 900px;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+/* Bên trái (logo) */
+.auth-left {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #fff;
+}
+
+.auth-left .logo {
+    width: 180px;
+}
+
+/* Bên phải (form) */
+.auth-right {
+    flex: 1;
+    padding: 40px;
+}
+
+/* Tiêu đề */
+h2 {
+    margin-bottom: 25px;
+    color: #2c3e50;
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Form group */
+.form-group {
+    margin-bottom: 18px;
+}
+
+/* Label */
+label {
+    margin-bottom: 6px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #34495e;
+    display: block;
+}
+
+/* Input & select */
+input[type="text"],
+input[type="password"],
+input[type="email"],
+select {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border 0.3s;
+}
+
+input:focus,
+select:focus {
+    border-color: #00b894;
+    outline: none;
+}
+
+/* Button */
+.auth-btn {
+    width: 100%;
+    padding: 14px;
+    background-color: #00b894;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.auth-btn:hover {
+    background-color: #019170;
+}
+
+/* Extra links */
+.extra-links {
+    margin-top: 18px;
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+}
+
+.extra-links a {
+    font-size: 14px;
+    text-decoration: none;
+    color: #007bff;
+}
+
+.extra-links a:hover {
+    text-decoration: underline;
+}

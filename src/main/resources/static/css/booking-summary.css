@@ -1,0 +1,180 @@
+/* Container */
+.summary-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+  font-family: "Segoe UI", sans-serif;
+  animation: fadeInUp 0.5s ease;
+  color: #333;
+}
+
+/* Header */
+.summary-header {
+  font-size: 32px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 36px;
+  position: relative;
+  display: inline-block;
+  color: #1f2937;
+  letter-spacing: -0.5px;
+}
+
+.summary-header .underline {
+  position: absolute;
+  left: 0;
+  bottom: -10px;
+  height: 4px;
+  width: 100%;
+  background: linear-gradient(90deg, #007bff, #00c6ff);
+  border-radius: 2px;
+  animation: slideIn 0.6s ease;
+}
+
+/* Cards */
+.summary-card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  margin-bottom: 24px;
+  overflow: hidden;
+  animation: fadeIn 0.6s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.summary-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.12);
+}
+
+.card-header {
+  background: #f9fafb;
+  padding: 14px 20px;
+  font-weight: 600;
+  font-size: 16px;
+  border-bottom: 1px solid #e5e7eb;
+  color: #111827;
+  letter-spacing: 0.3px;
+}
+
+.card-body {
+  padding: 20px 24px;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.card-body p {
+  margin: 10px 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.card-body strong {
+  color: #111827;
+  font-weight: 600;
+}
+
+/* Slot list */
+.slot-list {
+  list-style: none;
+  margin: 0;
+  padding: 18px 24px;
+}
+
+.slot-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px dashed #e5e7eb;
+  font-size: 15px;
+  color: #374151;
+}
+
+.slot-list li:last-child {
+  border-bottom: none;
+}
+
+/* Status */
+.status-badge {
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-pending {
+  background: #fff3cd;
+  color: #92400e;
+}
+
+.status-success {
+  background: #dcfce7;
+  color: #166534;
+}
+
+/* Pricing */
+.pricing-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+
+.pricing-table th {
+  text-align: left;
+  padding: 12px 0;
+  font-weight: 500;
+  color: #374151;
+}
+
+.pricing-table td {
+  text-align: right;
+  padding: 12px 0;
+  color: #111827;
+}
+
+.pricing-final {
+  font-size: 20px;
+  font-weight: 700;
+  color: #16a34a;
+}
+
+/* Payment */
+.payment-box {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.pay-btn {
+  background: linear-gradient(90deg, #007bff, #00c6ff);
+  border: none;
+  padding: 14px 36px;
+  color: #fff;
+  border-radius: 10px;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.pay-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 22px rgba(0, 123, 255, 0.25);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+  from { width: 0; }
+  to   { width: 100%; }
+}

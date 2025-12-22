@@ -1,0 +1,329 @@
+/* ==================== FONT & BASE ==================== */
+body {
+  font-family: "Inter", sans-serif;
+  background: #f8fafc;
+  color: #0f172a;
+  margin: 0;
+  padding: 0;
+}
+
+/* ==================== CONTAINER ==================== */
+.booking-history-container {
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 36px;
+  background: #fff;
+  border-radius: 24px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  animation: fadeInUp 0.4s ease;
+}
+
+.booking-history-container h2 {
+  font-family: "Inter", sans-serif;
+  font-size: 30px;
+  font-weight: 700;
+  text-align: center;
+  color: #1e293b;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.booking-history-container h2::after {
+  content: "";
+  width: 90px;
+  height: 4px;
+  background: linear-gradient(90deg, #3b82f6, #2563eb);
+  display: block;
+  margin: 10px auto 0;
+  border-radius: 2px;
+}
+
+/* ==================== TOOLBAR ==================== */
+.bh-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  font-size: 14px;
+  color: #475569;
+}
+
+.bh-left select {
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  background: #f8fafc;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.bh-left select:hover {
+  border-color: #2563eb;
+}
+
+/* ==================== TABLE ==================== */
+.booking-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.booking-table thead {
+  background: #f1f5f9;
+  font-weight: 600;
+}
+
+.booking-table th,
+.booking-table td {
+  padding: 14px 16px;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.booking-table tbody tr:nth-child(even) {
+  background: #f9fafb;
+}
+
+.booking-table tbody tr:hover {
+  background: #eef2ff;
+  transition: background 0.25s;
+}
+
+/* ==================== STATUS BADGES ==================== */
+.status {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 13px;
+  text-transform: capitalize;
+}
+
+.status.approved {
+  background: #dcfce7;
+  color: #15803d;
+}
+.status.cancelled {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+.status.pending {
+  background: #fef9c3;
+  color: #92400e;
+}
+.status.waiting-refund {
+  background: #e0f2fe;   /* xanh nhạt */
+  color: #0369a1;        /* xanh dương đậm */
+  border: 1px solid #38bdf8;  /* viền xanh nhẹ */
+}
+
+/* ==================== LINK ==================== */
+.detail-link {
+  color: #2563eb;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.detail-link:hover {
+  text-decoration: underline;
+}
+
+/* ==================== PAGINATION ==================== */
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 28px;
+  gap: 8px;
+}
+
+.page-btn {
+  padding: 8px 14px;
+  border: 1px solid #cbd5e1;
+  background: #f8fafc;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.page-btn:hover {
+  background: #e0e7ff;
+  border-color: #3b82f6;
+}
+
+.page-btn.active {
+  background: linear-gradient(90deg, #3b82f6, #2563eb);
+  color: #fff;
+  border: none;
+  font-weight: 700;
+  box-shadow: 0 3px 8px rgba(37, 99, 235, 0.3);
+}
+
+/* ==================== MODAL ==================== */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(6px);
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+  width: 580px;
+  max-width: 95%;
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 36px;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.15);
+  animation: zoomIn 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid #e2e8f0;
+}
+
+/* ===== Header ===== */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 16px;
+  margin-bottom: 28px;
+}
+
+.modal-header h3 {
+  font-family: "Inter", sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #0f172a;
+  letter-spacing: -0.3px;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 28px;
+  color: #94a3b8;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.close-btn:hover {
+  color: #ef4444;
+  transform: rotate(90deg);
+}
+
+/* ===== Body ===== */
+.modal-body p {
+  margin: 12px 0;
+  font-size: 15px;
+  line-height: 1.7;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #475569;
+}
+
+.modal-body p strong {
+  width: 40%;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #334155;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.modal-body p span {
+  width: 60%;
+  text-align: right;
+  font-size: 15px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+/* ===== Booked Slots ===== */
+#modalSlotsSection {
+  margin-top: 32px;
+  background: linear-gradient(145deg, #f8fafc, #f1f5f9);
+  padding: 20px 24px;
+  border-radius: 16px;
+  border: 1px dashed #cbd5e1;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.03);
+}
+
+#modalSlotsSection h4 {
+  font-family: "Inter", sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 14px;
+  text-transform: uppercase;
+  border-left: 4px solid #2563eb;
+  padding-left: 10px;
+}
+
+#modalSlotsList li {
+  padding: 8px 0;
+  font-size: 15px;
+  color: #1e293b;
+  margin-left: 24px;
+  font-weight: 500;
+}
+
+#modalSlotsList li::before {
+  content: "•";
+  color: #2563eb;
+  position: absolute;
+  left: -18px;
+  font-size: 22px;
+}
+
+/* ===== Footer ===== */
+.modal-footer {
+  margin-top: 36px;
+  text-align: right;
+  border-top: 1px solid #e2e8f0;
+  padding-top: 16px;
+}
+
+.close-btn-footer {
+  padding: 12px 28px;
+  background: linear-gradient(90deg, #3b82f6, #2563eb);
+  border: none;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.25s;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+}
+
+.close-btn-footer:hover {
+  background: linear-gradient(90deg, #2563eb, #1d4ed8);
+  transform: translateY(-2px);
+}
+
+/* ===== Animations ===== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes zoomIn {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}

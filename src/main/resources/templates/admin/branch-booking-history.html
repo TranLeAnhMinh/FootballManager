@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="#{booking.history.title}">Booking History - Admin</title>
+
+  <!-- Fonts & CSS -->
+  <link rel="stylesheet" th:href="@{/css/home.css}">
+  <link rel="stylesheet" th:href="@{/css/adminbranchbooking.css}">
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+
+<body onload="loadBranchBookings(0)">
+<div class="home-container">
+
+  <!-- 🌐 Language Switcher -->
+  <div th:replace="layouts/langswitcher :: langSwitcher"></div>
+
+  <!-- 🧭 Sidebar -->
+  <div th:replace="layouts/adminbranchsidebar :: adminSidebar"></div>
+
+  <!-- 🧱 Main Content -->
+  <div class="main-content">
+    <div class="booking-history-container">
+      <h2 th:text="#{booking.history.title}">Lịch sử đặt sân</h2>
+
+      <!-- Toolbar -->
+      <div class="bh-toolbar">
+        <!-- Left: page size -->
+        <div class="bh-left">
+          <label th:text="#{booking.history.show}">Hiển thị</label>
+          <select id="pageSize" onchange="changePageSize(this.value)">
+            <option value="10" selected>10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+          </select>
+          <span th:text="#{booking.history.itemsPerPage}">mục / trang</span>
+        </div>
+
+        <!-- Right: filter -->
+        <div class="filter-bar">
+          <div class="filter-group">
+
+            <!-- Người dùng -->
+            <div class="filter-box">
+              <i class="fa fa-user"></i>
+              <input type="text"
+                     id="searchKeyword"
+                     th:placeholder="#{user.info.fullName}"
+                     onkeyup="applyFilters()">
+            </div>
+
+            <!-- Tên sân -->
+            <div class="filter-box">
+              <i class="fa fa-futbol"></i>
+              <input type="text"
+                     id="filterPitchName"
+                     th:placeholder="#{booking.table.pitch}"
+                     onkeyup="applyFilters()">
+            </div>
+
+            <!-- Trạng thái -->
+            <div class="filter-select">
+              <i class="fa fa-list"></i>
+              <select id="filterStatus" onchange="applyFilters()">
+                <option value="" th:text="#{booking.table.status}">Tất cả trạng thái</option>
+                <option value="APPROVED" th:text="#{status.approved}"></option>
+                <option value="WAITING_REFUND" th:text="#{status.waiting_refund}"></option>
+                <option value="REFUNDED" th:text="#{status.refunded}"></option>
+                <option value="CANCELLED" th:text="#{status.cancelled}"></option>
+              </select>
+            </div>
+
+            <!-- Từ ngày -->
+            <div class="filter-date">
+              <i class="fa fa-calendar-alt"></i>
+              <input type="datetime-local" id="filterStartDate" onchange="applyFilters()">
+            </div>
+
+            <!-- Đến ngày -->
+            <div class="filter-date">
+              <i class="fa fa-calendar-check"></i>
+              <input type="datetime-local" id="filterEndDate" onchange="applyFilters()">
+            </div>
+
+            <!-- Nút reset -->
+            <button class="filter-reset" onclick="resetFilters()">
+              <i class="fa fa-rotate-left"></i>
+              <span th:text="#{filter.reset}">Xóa bộ lọc</span>
+            </button>
+          </div>
+
+          <span id="summaryText"></span>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <table class="booking-table">
+        <thead>
+        <tr>
+          <th th:text="#{booking.table.no}">#</th>
+          <th th:text="#{booking.table.pitch}">Sân</th>
+          <th th:text="#{booking.table.branch}">Chi nhánh</th>
+          <th th:text="#{booking.table.date}">Ngày đặt</th>
+          <th th:text="#{booking.table.status}">Trạng thái</th>
+          <th th:text="#{booking.table.price}">Giá</th>
+          <th th:text="#{booking.table.detail}">Chi tiết</th>
+          <th th:text="#{action.title}">Hành động</th>
+        </tr>
+        </thead>
+        <tbody id="branchBookingList"></tbody>
+      </table>
+
+      <!-- Pagination -->
+      <div class="pagination" id="pagination"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal chi tiết -->
+<div id="bookingModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 th:text="#{booking.summary.title}">Chi tiết đặt sân</h3>
+      <button class="close-btn" onclick="closeModal()">&times;</button>
+    </div>
+
+    <div class="modal-body">
+      <p><strong th:text="#{booking.summary.pitch}">Sân:</strong> <span id="modalPitch"></span></p>
+      <p><strong th:text="#{booking.summary.branch}">Chi nhánh:</strong> <span id="modalBranch"></span></p>
+      <p><strong th:text="#{booking.summary.user}">Người đặt:</strong> <span id="modalUser"></span></p>
+      <p><strong th:text="#{booking.summary.date}">Ngày:</strong> <span id="modalDate"></span></p>
+      <p><strong th:text="#{booking.summary.status}">Trạng thái:</strong> <span id="modalStatus"></span></p>
+      <p><strong th:text="#{booking.summary.note}">Ghi chú:</strong> <span id="modalNote"></span></p>
+
+      <div id="modalSlotsSection">
+        <h4 th:text="#{booking.summary.slots}">Các khung giờ đã đặt</h4>
+        <ul id="modalSlotsList"></ul>
+      </div>
+
+      <div class="modal-footer">
+        <button class="close-btn-footer" onclick="closeModal()" th:text="#{booking.close}">Đóng</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Inject JS i18n -->
+<script th:inline="javascript">
+/*<![CDATA[*/
+  const i18n = {
+    status: {
+      PENDING: /*[[#{status.pending}]]*/ 'Pending',
+      APPROVED: /*[[#{status.approved}]]*/ 'Approved',
+      WAITING_REFUND: /*[[#{status.waiting_refund}]]*/ 'Waiting Refund',
+      REFUNDED: /*[[#{status.refunded}]]*/ 'Refunded',
+      CANCELLED: /*[[#{status.cancelled}]]*/ 'Cancelled'
+    },
+    action: {
+      cancel: /*[[#{action.cancel}]]*/ "Hủy",
+      refund: /*[[#{action.refund}]]*/ "Hoàn tiền"
+    },
+    table: {
+      noData: /*[[#{booking.table.noData}]]*/ 'No data',
+      view: /*[[#{booking.table.view}]]*/ 'View'
+    },
+    pagination: /*[[#{pagination.range}]]*/ '{0}–{1} / {2}',
+    filter: {
+      reset: /*[[#{filter.reset}]]*/ 'Clear filters'
+    },
+    alert: {
+      notLoggedIn: /*[[#{auth.notLoggedIn}]]*/ 'You are not logged in',
+      updateSuccess: /*[[#{alert.updateSuccess}]]*/ 'Updated successfully!',
+      updateFail: /*[[#{alert.updateFail}]]*/ 'Update failed!'
+    },
+    confirm: {
+      refund: /*[[#{confirm.refund}]]*/ 'Are you sure to refund this booking?',
+      cancel: /*[[#{confirm.cancel}]]*/ 'Are you sure to cancel this booking?'
+    },
+    note: {
+      refund: /*[[#{note.refund}]]*/ 'Refunded via customer bank account.',
+      cancel: /*[[#{note.cancel}]]*/ 'Cancelled by branch admin.'
+    },
+    error: {
+      loadFail: /*[[#{error.loadFail}]]*/ 'Failed to load data',
+      updateFail: /*[[#{error.updateFail}]]*/ 'Failed to update booking',
+      notFound: /*[[#{error.notFound}]]*/ 'Booking not found'
+    }
+  };
+/*]]>*/
+</script>
+
+<!-- JS -->
+<script th:src="@{/js/auth.js}"></script>
+<script th:src="@{/js/adminbranchbooking.js}"></script>
+<script th:src="@{/js/lang-switcher.js}"></script>
+
+</body>
+</html>

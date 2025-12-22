@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="#{homepage.title}">Branch Management</title>
+  <link rel="stylesheet" th:href="@{/css/home.css}">
+  <link rel="stylesheet" th:href="@{/css/adminbranchhome.css}">
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+
+<body>
+<div class="home-container">
+  <!-- Thanh chọn ngôn ngữ -->
+  <div th:replace="layouts/langswitcher :: langSwitcher"></div>
+
+  <!-- Sidebar riêng cho admin -->
+  <div th:replace="layouts/adminbranchsidebar :: adminSidebar"></div>
+
+  <!-- Main content -->
+  <div class="main-content">
+    <h2 th:text="#{homepage.pitches}">Pitches</h2>
+
+    <!-- Danh sách loại sân -->
+    <div class="pitches">
+      <div class="pitch-card" onclick="loadAdminPitches(5)">
+        <img th:src="@{/images/metropolitano.jpg}" alt="5-pitch">
+        <p th:text="#{homepage.pitch.5}">5-a-side Pitch</p>
+      </div>
+      <div class="pitch-card" onclick="loadAdminPitches(7)">
+        <img th:src="@{/images/Bernabeu5.jpg}" alt="7-pitch">
+        <p th:text="#{homepage.pitch.7}">7-a-side Pitch</p>
+      </div>
+      <div class="pitch-card wide" onclick="loadAdminPitches(11)">
+        <img th:src="@{/images/oldtrafford55.jpg}" alt="11-pitch">
+        <p th:text="#{homepage.pitch.11}">11-a-side Pitch</p>
+      </div>
+    </div>
+
+    <!-- Nơi hiển thị danh sách sân chi tiết -->
+    <div id="pitchContainer"></div>
+  </div>
+</div>
+<script th:inline="javascript">
+  const i18n = {
+    statusActive: /*[[#{pitch.status.active}]]*/ "Active",
+    statusInactive: /*[[#{pitch.status.inactive}]]*/ "Inactive",
+    loading: /*[[#{pitch.loading}]]*/ "Loading...",
+    error: /*[[#{pitch.error}]]*/ "Error loading data",
+    empty: /*[[#{pitch.empty}]]*/ "No pitches available"
+  };
+</script>
+<!-- Import JS -->
+<script th:src="@{/js/auth.js}"></script>
+<script th:src="@{/js/adminbranchhome.js}"></script>
+<script th:src="@{/js/lang-switcher.js}"></script>
+</body>
+</html>

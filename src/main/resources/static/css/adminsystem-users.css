@@ -1,0 +1,285 @@
+/* ===================== GENERAL PAGE ===================== */
+.main-content {
+  padding: 26px 32px;
+  font-family: "Inter", sans-serif;
+}
+
+.main-content h2 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 22px;
+}
+
+.main-content h2::after {
+  content: "";
+  display: block;
+  width: 55px;
+  height: 3px;
+  background: #3b82f6;
+  border-radius: 2px;
+  margin-top: 6px;
+}
+
+.main-content h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 18px 0 12px;
+  color: #111827;
+}
+
+/* ===================== FILTER BOX ===================== */
+.user-filter-box {
+  background: #fff;
+  padding: 16px 20px;
+  border-radius: 14px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  border: 1px solid #e5e7eb;
+  margin-bottom: 26px;
+}
+
+.filter-row {
+  display: flex;
+  gap: 12px;
+}
+
+.filter-input,
+.filter-select {
+  flex: 1;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 15px;
+  outline: none;
+  background: #fff;
+}
+
+.filter-input:focus,
+.filter-select:focus {
+  border-color: #2563eb;
+}
+
+/* ===================== CARD SECTION ===================== */
+.user-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 1100px;
+}
+
+/* ===================== TABLE WRAPPER ===================== */
+.user-card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 18px 22px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  border: 1px solid #e5e7eb;
+}
+
+/* ===================== TABLE ===================== */
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.user-table thead th {
+  background: #f1f5f9;
+  color: #1e293b;
+  font-weight: 600;
+  font-size: 15px;
+  padding: 14px;
+  border-bottom: 2px solid #e5e7eb;
+  text-align: left;
+}
+
+.user-table tbody td {
+  padding: 14px;
+  font-size: 15px;
+  color: #374151;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.user-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+/* ===================== STATUS TAG ===================== */
+.status-tag {
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.status-tag.active {
+  background-color: #d1fae5;
+  color: #047857;
+}
+
+.status-tag.inactive {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+/* ===================== ROLE TAG ===================== */
+.role-tag {
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+/* ===================== ACTION BUTTONS ===================== */
+.btn-small {
+  padding: 7px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  outline: none;
+  cursor: pointer;
+  border: none;
+  transition: all 0.25s ease;
+}
+
+/* Danger outline */
+.btn-inactive {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+.btn-inactive:hover {
+  background: #fecaca;
+  transform: translateY(-2px);
+}
+
+/* Success outline */
+.btn-active {
+  background: #d1fae5;
+  color: #047857;
+}
+.btn-active:hover {
+  background: #a7f3d0;
+  transform: translateY(-2px);
+}
+
+/* Approve button = gradient chính giống add voucher */
+.btn-approve {
+  background: linear-gradient(90deg, #3b82f6, #2563eb);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(37,99,235,0.25);
+}
+.btn-approve:hover {
+  background: linear-gradient(90deg, #2563eb, #1d4ed8);
+  transform: translateY(-2px);
+}
+
+.action-cell {
+  display: flex;
+  gap: 10px;
+}
+
+/* ===================== PAGINATION ===================== */
+.pagination-box {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.page-btn {
+  padding: 7px 12px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  background: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: .25s ease;
+}
+
+.page-btn:hover {
+  border-color: #2563eb;
+  transform: translateY(-1px);
+}
+
+.page-btn.active {
+  background: #2563eb;
+  color: #fff;
+  border-color: #2563eb;
+  transform: none;
+}
+
+/* ===================== MODAL ===================== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: .25s ease;
+  z-index: 99;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-box {
+  background: #fff;
+  width: 420px;
+  border-radius: 14px;
+  padding: 24px;
+  animation: fadeIn .3s ease;
+  box-shadow: 0 6px 22px rgba(0,0,0,.12);
+}
+
+.modal-box h4 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+
+.modal-select {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 15px;
+  border: 1px solid #d1d5db;
+  margin-top: 6px;
+}
+
+.modal-action {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.btn-cancel {
+  background: #6b7280;
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 10px;
+}
+
+.btn-confirm {
+  background: linear-gradient(90deg, #3b82f6, #2563eb);
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 10px;
+}
+
+/* ===================== EMPTY ===================== */
+.empty-row td {
+  padding: 20px;
+  font-size: 15px;
+  text-align: center;
+  color: #6b7280;
+}
+
+/* ===================== ANIM ===================== */

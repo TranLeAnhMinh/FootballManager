@@ -1,0 +1,283 @@
+/* Card chi tiết sân */
+.pitch-detail-card {
+    display: flex;
+    gap: 24px;
+    padding: 24px;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    margin-bottom: 24px;
+    align-items: flex-start;
+}
+
+.pitch-detail-img {
+    flex: 1;
+    max-width: 50%;
+    height: 320px; /* to hơn cho đẹp */
+    object-fit: cover;
+    border-radius: 12px;
+    margin: 0 auto; /* canh giữa */
+}
+
+.pitch-detail-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.pitch-detail-info h3 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #111827;
+    margin: 0;
+}
+
+.pitch-detail-info p {
+    margin: 0;
+    font-size: 15px;
+    color: #374151;
+}
+
+.pitch-detail-info strong {
+    color: #111827;
+}
+
+/* Nút booking */
+.booking-btn {
+    margin-top: 12px; /* ✅ thêm khoảng cách dưới status */
+    display: inline-block;
+    padding: 10px 16px;
+    background: #10b981; /* xanh ngọc */
+    color: #fff;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+    width: fit-content;
+}
+
+.booking-btn:hover {
+    background: #059669;
+    transform: scale(1.05);
+}
+
+/* Gallery */
+.gallery-container {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* ✅ canh giữa */
+    gap: 12px;
+    margin: 24px 0;
+}
+.gallery-images {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    padding: 8px;
+}
+.gallery-images::-webkit-scrollbar {
+    display: none;
+}
+.gallery-images img {
+    width: 300px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.gallery-images img:hover {
+    transform: scale(1.08);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+.gallery-nav {
+    background: #e5e7eb;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+.gallery-nav:hover {
+    background: #d1d5db;
+}
+
+/* Reviews */
+.review-section {
+    margin-top: 24px;
+    padding: 20px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    animation: fadeIn 0.4s ease-in-out;
+}
+.review-section h4 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: #111827;
+}
+.review-card {
+    border-bottom: 1px solid #e5e7eb;
+    padding: 12px 0;
+    transition: transform 0.2s ease;
+}
+.review-card:hover {
+    transform: translateX(4px);
+}
+.review-card:last-child {
+    border-bottom: none;
+}
+.review-card strong {
+    color: #111827;
+}
+.review-card p {
+    margin: 6px 0 0;
+    font-size: 14px;
+    color: #374151;
+}
+
+/* Modern stars */
+.star {
+    font-size: 18px;
+    margin-right: 2px;
+    color: #d1d5db; /* sao trống = xám */
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+.star.filled {
+    color: #fbbf24; /* sao vàng */
+}
+.star:hover {
+    transform: scale(1.2);
+}
+
+/* Nút quay lại */
+.back-btn {
+    display: inline-block;
+    padding: 10px 16px;
+    background: #3b82f6;
+    color: #fff;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background 0.2s ease;
+    margin-top: 28px; /* ✅ thêm khoảng cách với reviews */
+}
+
+.back-btn:hover {
+    background: #2563eb;
+}
+
+
+/* ======= CUSTOM BOOTSTRAP MODAL (ADMIN STYLE) ======= */
+
+.modal-backdrop.show {
+    opacity: 0.4 !important;
+}
+
+.modal-content {
+    border-radius: 18px !important;
+    border: none !important;
+    animation: modalFade 0.25s ease-out;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+    background: #ffffff;
+}
+
+@keyframes modalFade {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.modal-header {
+    background: #f8fafc;
+    padding: 18px 22px;
+    border-bottom: 1px solid #e5e7eb;
+    border-radius: 18px 18px 0 0 !important;
+}
+
+.modal-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #111827;
+}
+
+.modal-body {
+    padding: 22px;
+}
+
+.modal-body label {
+    font-size: 15px;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 6px;
+}
+
+.modal-body input,
+.modal-body textarea,
+.modal-body select {
+    border-radius: 10px;
+    border: 1px solid #d1d5db;
+    padding: 10px 12px;
+    font-size: 15px;
+    transition: 0.25s ease;
+}
+
+.modal-body input:focus,
+.modal-body textarea:focus,
+.modal-body select:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.modal-footer {
+    padding: 16px 22px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.modal-footer .btn {
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.modal-footer .btn-primary {
+    background: linear-gradient(90deg, #2563eb, #1d4ed8);
+    border: none;
+}
+
+.modal-footer .btn-primary:hover {
+    background: linear-gradient(90deg, #1d4ed8, #1e40af);
+}
+
+.modal-footer .btn-secondary {
+    background: #e5e7eb;
+    color: #374151;
+}
+
+.modal-footer .btn-secondary:hover {
+    background: #d1d5db;
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .pitch-detail-card {
+        flex-direction: column;
+    }
+
+    .pitch-detail-img {
+        max-width: 100%;
+        height: 240px;
+    }
+}

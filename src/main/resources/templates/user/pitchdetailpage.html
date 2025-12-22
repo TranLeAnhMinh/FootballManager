@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{pitch.detail.title}">Pitch Detail</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+    <link rel="stylesheet" th:href="@{/css/pitchdetail.css}"> <!-- CSS riêng cho trang detail -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body>
+<div class="home-container">
+    <!-- Sidebar -->
+    <div th:replace="layouts/sidebar :: sidebar"></div>
+
+    <!-- Main content -->
+    <div class="main-content">
+        <h2 th:text="#{pitch.detail.heading}">Pitch Detail</h2>
+
+        <!-- ✅ Container để JS fill dữ liệu -->
+        <div id="pitchDetailContainer">
+            <p th:text="#{branch.loading}">Loading...</p>
+        </div>
+
+        <!-- ✅ Gallery // UPDATED -->
+        <div class="gallery-container"> <!-- // ADD -->
+            <button class="gallery-nav" id="galleryPrev">←</button>
+            <div class="gallery-images" id="galleryImages"></div>
+            <button class="gallery-nav" id="galleryNext">→</button>
+        </div>
+
+        <!-- ✅ Reviews // UPDATED -->
+    <div class="review-section">
+        <h4>
+            <span th:text="#{review.average}">Average Rating:</span>
+            <span id="avgRating">0</span>
+        </h4>
+        <div id="reviewsContainer">
+            <p th:text="#{review.none}">No reviews yet</p>
+        </div>
+    </div>
+
+        <!-- Nút quay lại // giữ nguyên nhưng CSS đã thêm margin-top -->
+        <a href="/user/home" class="back-btn" th:text="#{pitch.back}">← Back to Pitches</a>
+    </div>
+</div>
+
+<!-- ✅ Inject i18n và pitchId -->
+<script th:inline="javascript">
+    const i18n = {
+        loading: /*[[#{branch.loading}]]*/ "Loading...",
+        error: /*[[#{branch.error}]]*/ "Error loading data",
+        fetchFailed: /*[[#{branch.fetchFailed}]]*/ "Failed to fetch data",
+        location: /*[[#{pitch.location}]]*/ "Location:",
+        description: /*[[#{pitch.description}]]*/ "Description:",
+        branch: /*[[#{pitch.branch}]]*/ "Branch:",
+        type: /*[[#{pitch.type}]]*/ "Type:",
+        status: /*[[#{pitch.status}]]*/ "Status:",
+        active: /*[[#{pitch.active}]]*/ "Active",
+        inactive: /*[[#{pitch.inactive}]]*/ "Inactive",
+        booking: /*[[#{pitch.booking}]]*/ "Booking",
+    };
+
+    const pitchId = /*[[${pitchId}]]*/ null; // ✅ Nhận từ controller
+</script>
+
+<script src="/js/pitchdetail.js"></script>
+</body>
+</html>

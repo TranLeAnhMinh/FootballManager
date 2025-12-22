@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="#{booking.history.title}">Lịch sử đặt sân</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/css/home.css}">
+  <link rel="stylesheet" th:href="@{/css/bookinghistory.css}">
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <script th:inline="javascript">
+    const statusTextMap = {
+        PENDING: /*[[#{status.pending}]]*/ "Chưa thanh toán",
+        APPROVED: /*[[#{status.approved}]]*/ "Đã xác nhận",
+        PAID: /*[[#{status.paid}]]*/ "Đã thanh toán",
+        CHECKED_IN: /*[[#{status.checked_in}]]*/ "Đã check-in",
+        CANCELLED: /*[[#{status.cancelled}]]*/ "Đã hủy",
+        NO_SHOW: /*[[#{status.no_show}]]*/ "Không đến",
+        WAITING_REFUND: /*[[#{status.waiting_refund}]]*/ "Đang đợi hoàn tiền"
+    }
+    const bookingNoDataText = /*[[#{booking.table.noData}]]*/ "Chưa có lịch sử đặt sân nào";
+    const bookingViewText = /*[[#{booking.table.view}]]*/ "Xem";
+    const paginationRangeText = /*[[#{pagination.range}]]*/ "{0}–{1} / {2} items";
+  </script>
+
+  <script defer th:src="@{/js/bookinghistory.js}"></script>
+</head>
+<body onload="loadBookingHistory(0)">
+
+<div class="home-container">
+  <!-- Sidebar -->
+  <div th:replace="layouts/sidebar :: sidebar"></div>
+
+  <!-- Main -->
+  <div class="main-content">
+    <div class="booking-history-container">
+      <h2 th:text="#{booking.history.title}">Lịch sử đặt sân</h2>
+
+      <!-- Toolbar -->
+      <div class="bh-toolbar">
+        <div class="bh-left">
+          <label for="pageSize" th:text="#{booking.history.show}">Hiển thị</label>
+          <select id="pageSize" onchange="changePageSize(this.value)">
+            <option value="5">5</option>
+            <option value="10" selected>10</option>
+            <option value="20">20</option>
+          </select>
+          <span th:text="#{booking.history.itemsPerPage}">mục / trang</span>
+        </div>
+        <div class="bh-right">
+          <span id="summaryText"></span>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <table class="booking-table">
+        <thead>
+        <tr>
+          <th>#</th>
+          <th th:text="#{booking.table.pitch}">Sân</th>
+          <th th:text="#{booking.table.branch}">Chi nhánh</th>
+          <th th:text="#{booking.table.date}">Ngày đặt</th>
+          <th th:text="#{booking.table.status}">Trạng thái</th>
+          <th th:text="#{booking.table.price}">Giá</th>
+          <th th:text="#{booking.table.detail}">Chi tiết</th>
+        </tr>
+        </thead>
+        <tbody id="bookingList">
+        <!-- JS render -->
+        </tbody>
+      </table>
+
+      <!-- Pagination -->
+      <div class="pagination" id="pagination"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ✅ Modal Chi tiết Booking -->
+<div id="bookingModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 th:text="#{booking.summary.title}">Chi tiết đặt sân</h3>
+      <button class="close-btn" onclick="closeModal()">&times;</button>
+    </div>
+
+    <div class="modal-body">
+      <p><strong th:text="#{booking.summary.pitch}">Pitch:</strong> <span id="modalPitchName"></span></p>
+      <p><strong th:text="#{booking.summary.branch}">Chi nhánh:</strong> <span id="modalBranchName"></span></p>
+      <p><strong th:text="#{booking.summary.user}">Người đặt:</strong> <span id="modalUserName"></span></p>
+      <p><strong th:text="#{booking.summary.date}">Ngày đặt:</strong> <span id="modalBookingDate"></span></p>
+      <p><strong th:text="#{booking.summary.status}">Trạng thái:</strong> <span id="modalStatus"></span></p>
+      <p><strong th:text="#{booking.summary.note}">Ghi chú:</strong> <span id="modalNote"></span></p>
+
+      <div id="modalSlotsSection">
+        <h4 th:text="#{booking.summary.slots}">Các khung giờ đã đặt</h4>
+        <ul id="modalSlotsList"></ul>
+      </div>
+
+      <div class="modal-footer">
+        <button class="close-btn-footer" th:text="#{booking.close}" onclick="closeModal()">Đóng</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

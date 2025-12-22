@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{admin.users.title}">User Management</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+    <link rel="stylesheet" th:href="@{/css/adminsystem-users.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+</head>
+
+<body>
+<div class="home-container">
+
+    <!-- Sidebar -->
+    <div th:replace="layouts/adminsystemsidebar :: adminSystemSidebar"></div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+
+        <h2 th:text="#{admin.users.title}">User Management</h2>
+
+        <!-- FILTER -->
+        <div class="user-filter-box">
+            <div class="filter-row">
+                <input id="filterName" class="filter-input"
+                       th:placeholder="#{admin.users.filter.name}" />
+
+                <input id="filterEmail" class="filter-input"
+                       th:placeholder="#{admin.users.filter.email}" />
+
+                <select id="filterRole" class="filter-select">
+                    <option value="" th:text="#{admin.users.filter.roleAll}">All roles</option>
+                    <option value="USER">USER</option>
+                    <option value="ADMIN_BRANCH">ADMIN_BRANCH</option>
+                    <option value="PENDING_ADMIN_BRANCH">PENDING_ADMIN_BRANCH</option>
+                    <option value="ADMIN_SYSTEM">ADMIN_SYSTEM</option>
+                </select>
+
+                <select id="filterStatus" class="filter-select">
+                    <option value="" th:text="#{admin.users.filter.statusAll}">All status</option>
+                    <option value="ACTIVE" th:text="#{status.active}">ACTIVE</option>
+                    <option value="INACTIVE" th:text="#{status.inactive}">INACTIVE</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- USER LIST -->
+        <div class="user-section">
+            <h3 th:text="#{admin.users.listTitle}">User List</h3>
+
+            <table class="user-table">
+                <thead>
+                <tr>
+                    <th th:text="#{admin.users.col.fullName}">Full Name</th>
+                    <th th:text="#{admin.users.col.email}">Email</th>
+                    <th th:text="#{admin.users.col.phone}">Phone</th>
+                    <th th:text="#{admin.users.col.role}">Role</th>
+                    <th th:text="#{admin.users.col.status}">Status</th>
+                    <th th:text="#{admin.users.col.branch}">Branch</th>
+                    <th th:text="#{action.title}">Actions</th>
+                </tr>
+                </thead>
+                <tbody id="userTableBody"></tbody>
+            </table>
+
+            <div class="pagination-box">
+                <span id="summaryText"></span>
+                <div id="paginationContainer"></div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- MODAL APPROVE -->
+<div class="modal-overlay" id="approveModal">
+    <div class="modal-box">
+        <h4 th:text="#{admin.users.approveTitle}">Approve Admin Branch</h4>
+
+        <input type="hidden" id="approveUserId">
+
+        <label th:text="#{admin.users.chooseBranch}">Choose a branch</label>
+        <select id="approveBranchId" class="modal-select">
+            <option value="" th:text="#{admin.users.chooseBranch.placeholder}">-- Choose branch --</option>
+        </select>
+
+        <div class="modal-action">
+            <button class="btn-cancel" id="btnCloseApprove"
+                    th:text="#{button.cancel}">Cancel</button>
+
+            <button class="btn-confirm" id="confirmApproveBtn"
+                    th:text="#{approve}">Approve</button>
+        </div>
+    </div>
+</div>
+
+<!-- I18N inject for JS -->
+<script th:inline="javascript">
+    const i18n = {
+        loading: '[[#{loading}]]',
+        error: '[[#{error}]]',
+        empty: '[[#{empty}]]',
+        activate: '[[#{activate}]]',
+        deactivate: '[[#{deactivate}]]',
+        approve: '[[#{approve}]]',
+        chooseBranchLoading: '[[#{admin.users.chooseBranch.loading}]]',
+        chooseBranchEmpty: '[[#{admin.users.chooseBranch.empty}]]',
+        chooseBranchError: '[[#{admin.users.chooseBranch.error}]]'
+    };
+</script>
+
+<script src="/js/adminsystem-users.js"></script>
+
+</body>
+</html>

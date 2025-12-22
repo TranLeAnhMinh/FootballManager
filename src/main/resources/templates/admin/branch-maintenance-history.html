@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="#{maintenance.history.title}">Maintenance History</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" th:href="@{/css/home.css}">
+  <link rel="stylesheet" th:href="@{/css/adminbranchbooking.css}">
+  <link rel="stylesheet" th:href="@{/css/adminbranchmaintenance.css}">
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+
+<body onload="loadMaintenanceHistory(0)">
+<div class="home-container">
+
+  <!-- 🌐 Language Switcher -->
+  <div th:replace="layouts/langswitcher :: langSwitcher"></div>
+
+  <!-- 🧭 Sidebar -->
+  <div th:replace="layouts/adminbranchsidebar :: adminSidebar"></div>
+
+  <!-- 🧱 Main Content -->
+  <div class="main-content">
+    <div class="maintenance-history-container">
+      <h2 th:text="#{maintenance.history.title}">Lịch sử bảo trì sân</h2>
+
+      <!-- Toolbar -->
+      <div class="bh-toolbar">
+        <div class="bh-left">
+          <label th:text="#{booking.history.show}">Hiển thị</label>
+          <select id="pageSize" onchange="changePageSize(this.value)">
+            <option value="10" selected>10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+          </select>
+          <span th:text="#{booking.history.itemsPerPage}">mục / trang</span>
+        </div>
+
+        <!-- Filter -->
+        <div class="filter-bar">
+          <div class="filter-group">
+            <div class="filter-box">
+              <i class="fa fa-futbol"></i>
+              <input type="text" id="filterPitchName"
+                     th:placeholder="#{booking.table.pitch}"
+                     onkeyup="applyFilters()">
+            </div>
+            <div class="filter-date">
+              <i class="fa fa-calendar-alt"></i>
+              <input type="datetime-local" id="filterStartDate" onchange="applyFilters()">
+            </div>
+            <div class="filter-date">
+              <i class="fa fa-calendar-check"></i>
+              <input type="datetime-local" id="filterEndDate" onchange="applyFilters()">
+            </div>
+
+            <button class="filter-reset" onclick="resetFilters()">
+              <i class="fa fa-rotate-left"></i>
+              <span th:text="#{filter.reset}">Xóa bộ lọc</span>
+            </button>
+          </div>
+          <span id="summaryText"></span>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <table class="booking-table">
+        <thead>
+        <tr>
+          <th th:text="#{booking.table.no}">#</th>
+          <th th:text="#{booking.table.pitch}">Sân</th>
+          <th th:text="#{booking.table.branch}">Chi nhánh</th>
+          <th th:text="#{maintenance.table.startTime}">Thời gian bắt đầu</th>
+          <th th:text="#{maintenance.table.endTime}">Thời gian kết thúc</th>
+          <th th:text="#{maintenance.table.reason}">Lý do</th>
+          <th th:text="#{action.title}">Hành động</th>
+        </tr>
+        </thead>
+        <tbody id="maintenanceList"></tbody>
+      </table>
+
+      <!-- Pagination -->
+      <div class="pagination" id="pagination"></div>
+    </div>
+  </div>
+</div>
+
+<!-- 🌐 Inject i18n for JS -->
+<script th:inline="javascript">
+/*<![CDATA[*/
+  const i18n = {
+    table: {
+      noData: /*[[#{maintenance.table.noData}]]*/ 'Không có dữ liệu'
+    },
+    action: {
+      delete: /*[[#{action.delete}]]*/ 'Xóa'
+    },
+    confirm: {
+      delete: /*[[#{confirm.delete}]]*/ 'Bạn có chắc chắn muốn xóa lịch bảo trì này không?'
+    },
+    alert: {
+      notLoggedIn: /*[[#{auth.notLoggedIn}]]*/ 'Bạn chưa đăng nhập',
+      deleteSuccess: /*[[#{alert.deleteSuccess}]]*/ 'Đã xóa lịch bảo trì thành công!',
+      deleteFail: /*[[#{alert.deleteFail}]]*/ 'Không thể xóa lịch bảo trì!'
+    }
+  };
+/*]]>*/
+</script>
+
+<!-- JS -->
+<script th:src="@{/js/auth.js}"></script>
+<script th:src="@{/js/adminbranchmaintenance.js}"></script>
+<script th:src="@{/js/lang-switcher.js}"></script>
+
+</body>
+</html>

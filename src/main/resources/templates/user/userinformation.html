@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{user.info.title}">User Information</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+    <link rel="stylesheet" th:href="@{/css/userinformation.css}">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <script th:src="@{/js/userinformation.js}"></script>
+</head>
+<body onload="loadUserInfo()">
+
+<div class="home-container">
+    <!-- Sidebar -->
+    <div th:replace="layouts/sidebar :: sidebar"></div>
+
+    <!-- Main content -->
+    <div class="main-content">
+        <div class="user-info-container">
+            <h2 th:text="#{user.info.title}">User Information</h2>
+
+            <form class="user-info-form" onsubmit="updateUser(event)">
+                <p>
+                    <b th:text="#{user.info.fullName}">Full Name:</b>
+                    <input type="text" id="fullName" required>
+                </p>
+                <p>
+                    <b th:text="#{user.info.email}">Email:</b>
+                    <span id="email"></span>
+                </p>
+                <p>
+                    <b th:text="#{user.info.phone}">Phone:</b>
+                    <input type="text" id="phone">
+                </p>
+                <button class="update-btn" type="submit" th:text="#{user.info.updateBtn}">Update</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

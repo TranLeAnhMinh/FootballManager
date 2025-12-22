@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{homepage.title}">Home - User</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+    <link rel="stylesheet" th:href="@{/css/pitches.css}">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body>
+<div class="home-container">
+    <div class="lang-switcher">
+        <div class="lang-dropdown" th:with="currentLang=${#locale.language}">
+            <button class="lang-btn" id="langBtn">
+                 <!-- ✅ Hiển thị ngôn ngữ hiện tại -->
+                  <span th:switch="${currentLang}">
+                    <span th:case="'en'">English ▾</span>
+                    <span th:case="'vi'">Tiếng Việt ▾</span>
+                    <span th:case="'ja'">日本語 ▾</span>
+                  </span>
+            </button>
+        <div class="lang-menu" id="langMenu">
+            <a th:href="@{/user/home(lang='en')}">English</a>
+            <a th:href="@{/user/home(lang='vi')}">Tiếng Việt</a>
+            <a th:href="@{/user/home(lang='ja')}">日本語</a>
+        </div>
+    </div>
+    </div>
+    <!-- Sidebar -->
+    <div th:replace="layouts/sidebar :: sidebar"></div>
+
+    <!-- Main content -->
+    <div class="main-content">
+        <!-- ✅ Flash messages (ẩn, chỉ để JS đọc) -->
+        <div id="flash-success" th:text="${successMessage}" style="display:none;"></div>
+        <div id="flash-error" th:text="${errorMessage}" style="display:none;"></div>
+
+        <h2 th:text="#{homepage.pitches}">Pitches</h2>
+
+        <!-- Grid pitches -->
+        <div class="pitches">
+            <div class="pitch-card" onclick="loadBranches(5)">
+                <img th:src="@{/images/metropolitano.jpg}" alt="5-pitch">
+                <p th:text="#{homepage.pitch.5}">5-a-side Pitch</p>
+            </div>
+            <div class="pitch-card" onclick="loadBranches(7)">
+                <img th:src="@{/images/Bernabeu5.jpg}" alt="7-pitch">
+                <p th:text="#{homepage.pitch.7}">7-a-side Pitch</p>
+            </div>
+            <div class="pitch-card wide" onclick="loadBranches(11)">
+                <img th:src="@{/images/oldtrafford55.jpg}" alt="11-pitch">
+                <p th:text="#{homepage.pitch.11}">11-a-side Pitch</p>
+            </div>
+        </div>
+
+        <div id="branchContainer"></div>
+
+        <!-- Team posts -->
+        <h2 th:text="#{homepage.posts}">Team posts</h2>
+        <div class="team-posts">
+            <div class="post-card">
+                <span th:text="#{homepage.posts.placeholder}">
+                    Đây là khu vực hiển thị các bài đăng tìm đối.
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Toast container -->
+<div id="toast-container"></div>
+
+<script th:inline="javascript">
+    const i18n = {
+        expand: /*[[#{branch.expand}]]*/ "Expand ▼",
+        collapse: /*[[#{branch.collapse}]]*/ "Collapse ▲",
+        loading: /*[[#{branch.loading}]]*/ "Loading...",
+        error: /*[[#{branch.error}]]*/ "Error loading data",
+        fetchFailed: /*[[#{branch.fetchFailed}]]*/ "Failed to fetch data",
+        pitchBranch: /*[[#{pitch.branch}]]*/ "Branch"
+    };
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const success = document.getElementById("flash-success").innerText.trim();
+        const error = document.getElementById("flash-error").innerText.trim();
+
+        if (success) showToast(success, "success");
+        if (error) showToast(error, "error");
+    });
+
+    function showToast(message, type) {
+        const toast = document.createElement("div");
+        toast.className = `toast ${type}`;
+        toast.innerText = message;
+        document.getElementById("toast-container").appendChild(toast);
+
+        setTimeout(() => {
+            toast.remove();
+        }, 3000);
+    }
+</script>
+
+<script src="/js/auth.js"></script>
+<script src="/js/pitches.js"></script>
+<script src="/js/lang-switcher.js"></script>
+</body>
+</html>

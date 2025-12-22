@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{pitch.detail.title}">Pitch Detail</title>
+
+    <!-- FONT + CSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+    <link rel="stylesheet" th:href="@{/css/pitchdetail.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+    <!-- BOOTSTRAP CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+<div class="home-container">
+
+    <!-- Sidebar -->
+    <div th:replace="layouts/adminsystemsidebar :: adminSystemSidebar"></div>
+
+    <!-- Main content -->
+    <div class="main-content">
+        <h2 th:text="#{pitch.detail.heading}">Pitch Detail</h2>
+
+        <!-- Detail container -->
+        <div id="pitchDetailContainer">
+            <p th:text="#{branch.loading}">Loading...</p>
+        </div>
+
+        <!-- Gallery -->
+        <div class="gallery-container">
+            <button class="gallery-nav" id="galleryPrev">←</button>
+            <div class="gallery-images" id="galleryImages"></div>
+            <button class="gallery-nav" id="galleryNext">→</button>
+        </div>
+
+        <a href="/adminsystem/branches" class="back-btn" id="backBtn"></a>
+
+    </div>
+</div>
+
+
+<!-- =============== MODAL UPDATE =============== -->
+<div class="modal fade" id="editPitchModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered"> <!-- FIX HERE -->
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" th:text="#{pitch.edit.title}">Sửa sân</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <form id="editPitchForm">
+
+                    <div class="mb-3">
+                        <label class="form-label" th:text="#{pitch.name}">Tên sân</label>
+                        <input id="editName" type="text" class="form-control">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" th:text="#{pitch.location}">Địa chỉ sân</label>
+                        <input id="editLocation" type="text" class="form-control">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" th:text="#{pitch.description}">Mô tả</label>
+                        <textarea id="editDescription" class="form-control" rows="4"></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" th:text="#{pitch.type}">Loại sân</label>
+                        <select id="editPitchType" class="form-select">
+                        <option value="5" th:text="#{pitch.type.5}">5 người</option>
+                        <option value="7" th:text="#{pitch.type.7}">7 người</option>
+                        <option value="11" th:text="#{pitch.type.11}">11 người</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" th:text="#{pitch.status}">Trạng thái</label>
+                        <select id="editActive" class="form-select">
+                            <option value="true" th:text="#{pitch.active}">Đang hoạt động</option>
+                            <option value="false" th:text="#{pitch.inactive}">Ngưng hoạt động</option>
+                        </select>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{modal.cancel}">Hủy</button>
+                <button type="button" class="btn btn-primary" id="savePitchBtn" th:text="#{modal.save}">Lưu</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- ============ JS ============ -->
+<script th:inline="javascript">
+    const pitchId = /*[[${pitchId}]]*/ null;
+    const i18n = {
+        loading: /*[[#{branch.loading}]]*/ "Loading...",
+        error: /*[[#{branch.error}]]*/ "Error",
+        type: /*[[#{pitch.type}]]*/ "Loại sân",
+        status: /*[[#{pitch.status}]]*/ "Trạng thái",
+        active: /*[[#{pitch.active}]]*/ "Đang hoạt động",
+        inactive: /*[[#{pitch.inactive}]]*/ "Ngưng hoạt động",
+        branch: /*[[#{pitch.branch}]]*/ "Chi nhánh",
+        location: /*[[#{pitch.location}]]*/ "Địa điểm",
+        description: /*[[#{pitch.description}]]*/ "Mô tả",
+        edit: /*[[#{pitch.edit}]]*/ "Chỉnh sửa sân",
+        back: /*[[#{pitch.back}]]*/ "← Quay lại danh sách sân"
+    };
+</script>
+
+<!-- BOOTSTRAP JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- MAIN JS -->
+<script src="/js/adminsystem-pitch-detail.js"></script>
+
+</body>
+</html>

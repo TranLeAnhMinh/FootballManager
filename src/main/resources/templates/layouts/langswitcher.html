@@ -1,0 +1,23 @@
+<!-- layouts/langswitcher.html -->
+<div th:fragment="langSwitcher">
+  <div class="lang-switcher">
+    <div class="lang-dropdown" th:with="currentLang=${#locale.language}">
+      <button class="lang-btn" id="langBtn">
+        <!-- ✅ Hiển thị ngôn ngữ hiện tại -->
+        <span th:switch="${currentLang}">
+          <span th:case="'en'">English ▾</span>
+          <span th:case="'vi'">Tiếng Việt ▾</span>
+          <span th:case="'ja'">日本語 ▾</span>
+          <span th:case="*">Language ▾</span>
+        </span>
+      </button>
+
+      <div class="lang-menu" id="langMenu">
+        <!-- ✅ Nếu có biến currentPath (truyền từ controller), thì dùng nó -->
+        <a th:href="@{${currentPath != null ? currentPath : '/'}(lang='en')}">English</a>
+        <a th:href="@{${currentPath != null ? currentPath : '/'}(lang='vi')}">Tiếng Việt</a>
+        <a th:href="@{${currentPath != null ? currentPath : '/'}(lang='ja')}">日本語</a>
+      </div>
+    </div>
+  </div>
+</div>

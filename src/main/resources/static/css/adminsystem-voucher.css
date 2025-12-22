@@ -1,0 +1,141 @@
+/* =============== VOUCHER HEADER =============== */
+.voucher-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 22px;
+}
+
+.voucher-header h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #111827;
+}
+
+.voucher-header h2::after {
+    content: "";
+    display: block;
+    width: 55px;
+    height: 3px;
+    background: #3b82f6;
+    border-radius: 2px;
+    margin-top: 6px;
+}
+
+/* =============== ADD BUTTON =============== */
+.btn-add-voucher {
+    background: linear-gradient(90deg, #3b82f6, #2563eb);
+    color: #fff;
+    padding: 10px 18px;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+    transition: all 0.3s ease;
+}
+
+.btn-add-voucher:hover {
+    background: linear-gradient(90deg, #2563eb, #1d4ed8);
+    transform: translateY(-2px);
+}
+
+/* =============== LIST =============== */
+.voucher-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* =============== CARD =============== */
+.voucher-card {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 18px 22px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    border: 1px solid #e5e7eb;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+
+    max-width: 1100px; /* card gọn lại */
+    animation: fadeIn 0.4s ease;
+}
+
+/* =============== LEFT =============== */
+.voucher-left {
+    flex: 1;
+}
+
+.voucher-code {
+    font-size: 20px;
+    font-weight: 700;
+    color: #111827;
+    margin: 0 0 10px;
+}
+
+/* INFO GRID GỌN */
+.voucher-info {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(200px, auto));
+    gap: 6px 18px;
+    font-size: 15px;
+    color: #374151;
+}
+
+/* =============== RIGHT =============== */
+.voucher-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+    min-width: 90px;
+}
+
+/* =============== STATUS TAG =============== */
+.status-tag {
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.status-tag.active {
+    background-color: #d1fae5;
+    color: #047857;
+}
+
+.status-tag.inactive {
+    background-color: #fee2e2;
+    color: #b91c1c;
+}
+
+/* =============== DELETE BUTTON =============== */
+.btn-delete {
+    background: #fee2e2;
+    border: none;
+    color: #b91c1c;
+    padding: 8px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all .2s ease;
+}
+
+.btn-delete:hover {
+    background: #fecaca;
+    transform: scale(1.05);
+}
+
+/* =============== ANIMATION =============== */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
