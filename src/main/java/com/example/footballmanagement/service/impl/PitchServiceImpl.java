@@ -1,5 +1,4 @@
 package com.example.footballmanagement.service.impl;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -46,6 +45,8 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class PitchServiceImpl implements PitchService {
+   private static final Path UPLOAD_BASE =
+        Paths.get("C:/Code/footballmanagement/src/main/resources/static/images/pitchimages");
 
     private final PitchRepository pitchRepository;
     private final PitchTypeRepository pitchTypeRepository;
@@ -177,23 +178,33 @@ public class PitchServiceImpl implements PitchService {
     }
 
 @Override
-public PitchCreateResponse createPitchWithFiles(PitchCreateRequest request, List<MultipartFile> files) {
+public PitchCreateResponse createPitchWithFiles(
+        PitchCreateRequest request,
+        List<MultipartFile> files
+) {
 
-    // 🔹 Validate input
+    // =========================
+    // 1️⃣ Validate input
+    // =========================
     if (request.getBranchId() == null)
         throw new IllegalArgumentException("Branch ID is required");
     if (request.getPitchTypeId() == null)
         throw new IllegalArgumentException("PitchType ID is required");
 
-    // 🔹 Lấy Branch
+    // =========================
+    // 2️⃣ Load Branch & PitchType
+    // =========================
     Branch branch = branchRepository.findById(request.getBranchId())
-            .orElseThrow(() -> new RuntimeException("Branch not found: " + request.getBranchId()));
+            .orElseThrow(() ->
+                    new RuntimeException("Branch not found: " + request.getBranchId()));
 
-    // 🔹 Lấy PitchType
     PitchType pitchType = pitchTypeRepository.findById(request.getPitchTypeId())
-            .orElseThrow(() -> new RuntimeException("PitchType not found: " + request.getPitchTypeId()));
+            .orElseThrow(() ->
+                    new RuntimeException("PitchType not found: " + request.getPitchTypeId()));
 
-    // 🔹 Tạo Pitch entity
+    // =========================
+    // 3️⃣ Create Pitch entity
+    // =========================
     Pitch pitch = Pitch.builder()
             .name(request.getName())
             .location(request.getLocation())
@@ -203,54 +214,80 @@ public PitchCreateResponse createPitchWithFiles(PitchCreateRequest request, List
             .pitchType(pitchType)
             .build();
 
-    // 🔹 Nếu có file upload → xử lý lưu
+    // =========================
+    // 4️⃣ Upload images (FIXED)
+    // =========================
     if (files != null && !files.isEmpty()) {
-        String uploadDir = new File("src/main/resources/static/images/pitchimages").getAbsolutePath();
+
+        try {
+            Files.createDirectories(UPLOAD_BASE); // 🔥 đảm bảo folder tồn tại
+        } catch (IOException e) {
+            throw new RuntimeException("❌ Cannot create upload directory", e);
+        }
 
         List<PitchImage> imageEntities = new ArrayList<>();
 
         for (int i = 0; i < files.size(); i++) {
             MultipartFile file = files.get(i);
+
+            if (file.isEmpty()) continue;
+
             try {
-                String originalName = Objects.requireNonNull(file.getOriginalFilename());
-                String uniqueName = LocalDateTime.now()
-                        .format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"))
-                        + "_" + UUID.randomUUID().toString().substring(0, 8)
-                        + "_" + originalName;
+                String originalName =
+                        Objects.requireNonNull(file.getOriginalFilename());
 
-                Path targetPath = Paths.get(uploadDir, uniqueName);
-                Files.copy(file.getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
+                String uniqueName =
+                        LocalDateTime.now()
+                                .format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"))
+                                + "_" + UUID.randomUUID().toString().substring(0, 8)
+                                + "_" + originalName;
 
-                // ✅ File đầu tiên là cover, còn lại là ảnh phụ
+                Path targetPath = UPLOAD_BASE.resolve(uniqueName);
+
+                Files.copy(
+                        file.getInputStream(),
+                        targetPath,
+                        StandardCopyOption.REPLACE_EXISTING
+                );
+
                 boolean isCover = (i == 0);
 
                 imageEntities.add(
-                    PitchImage.builder()
-                            .pitch(pitch)
-                            .url("/images/pitchimages/" + uniqueName)
-                            .isCover(isCover)
-                            .build()
+                        PitchImage.builder()
+                                .pitch(pitch)
+                                .url("/images/pitchimages/" + uniqueName)
+                                .isCover(isCover)
+                                .build()
                 );
+
             } catch (IOException e) {
-                throw new RuntimeException("❌ Failed to save file: " + file.getOriginalFilename(), e);
+                throw new RuntimeException(
+                        "❌ Failed to save file: " + file.getOriginalFilename(), e
+                );
             }
         }
 
         pitch.setImages(imageEntities);
     }
 
-    // 🔹 Lưu Pitch + ảnh vào DB
+    // =========================
+    // 5️⃣ Save DB
+    // =========================
     Pitch saved = pitchRepository.save(pitch);
 
-    // 🔹 Trả về DTO
-    List<PitchImageResponse> imageResponses = saved.getImages() == null ? List.of() :
-            saved.getImages().stream()
-                    .map(img -> PitchImageResponse.builder()
-                            .id(img.getId())
-                            .url(img.getUrl())
-                            .isCover(img.isCover())
-                            .build())
-                    .toList();
+    // =========================
+    // 6️⃣ Build response
+    // =========================
+    List<PitchImageResponse> imageResponses =
+            saved.getImages() == null
+                    ? List.of()
+                    : saved.getImages().stream()
+                            .map(img -> PitchImageResponse.builder()
+                                    .id(img.getId())
+                                    .url(img.getUrl())
+                                    .isCover(img.isCover())
+                                    .build())
+                            .toList();
 
     return PitchCreateResponse.builder()
             .id(saved.getId())
