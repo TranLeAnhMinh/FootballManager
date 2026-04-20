@@ -22,7 +22,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
+import jakarta.persistence.FetchType;
 
 @Entity
 @Table(
@@ -83,7 +83,7 @@ public class User {
     private List<Notification> notifications;
 
     // 1 user có thể là admin của 1 branch
-    @OneToOne(mappedBy = "admin", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "admin", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private Branch branchAdmin;
 
     // 1 user có nhiều bookings

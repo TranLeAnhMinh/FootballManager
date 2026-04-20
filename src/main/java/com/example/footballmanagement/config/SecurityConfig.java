@@ -2,6 +2,7 @@ package com.example.footballmanagement.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,6 +17,7 @@ import static com.example.footballmanagement.constant.Endpoint.AUTH_RECOVERY;
 import static com.example.footballmanagement.constant.Endpoint.AUTH_RECOVERY_CONFIRM;
 import static com.example.footballmanagement.constant.Endpoint.AUTH_REFRESH;
 import static com.example.footballmanagement.constant.Endpoint.AUTH_REGISTER;
+import static com.example.footballmanagement.constant.Endpoint.BASE_PRICE_ADMIN_SYSTEM_ENDPOINT;
 import static com.example.footballmanagement.constant.Endpoint.BOOKING_ADMIN_ENDPOINT;
 import static com.example.footballmanagement.constant.Endpoint.BOOKING_BRANCH_ENDPOINT;
 import static com.example.footballmanagement.constant.Endpoint.BOOKING_ENDPOINT;
@@ -82,6 +84,8 @@ public class SecurityConfig {
                         "/fonts/**"
                 ).permitAll()
 
+                .requestMatchers(HttpMethod.GET, "/api/pitches/*/reviews/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/pitches/*/reviews/**").hasRole("USER")
                 /* ========= PUBLIC USER PAGES ========= */
                 .requestMatchers("/user/**", "/user/**?lang=**").permitAll()
 
@@ -120,6 +124,7 @@ public class SecurityConfig {
                 .requestMatchers(VOUCHER_ADMIN_SYSTEM_ENDPOINT).hasRole("ADMIN_SYSTEM")
                 .requestMatchers(REVENUE_ADMIN_SYSTEM_ENDPOINT).hasRole("ADMIN_SYSTEM")
                 .requestMatchers(USER_ADMIN_SYSTEM_ENDPOINT).hasRole("ADMIN_SYSTEM") 
+                .requestMatchers(BASE_PRICE_ADMIN_SYSTEM_ENDPOINT).hasRole("ADMIN_SYSTEM")
 
 
                 /* ========= ADMIN BRANCH API ========= */
@@ -133,7 +138,7 @@ public class SecurityConfig {
                 .requestMatchers(BOOKING_ENDPOINT).hasRole("USER")
                 .requestMatchers(VOUCHER_ENDPOINT).hasRole("USER")
 
-           
+        
 
                 /* ========= ALL OTHER ========= */
                 .anyRequest().authenticated()

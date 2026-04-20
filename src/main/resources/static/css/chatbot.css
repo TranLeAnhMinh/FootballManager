@@ -1,0 +1,173 @@
+/* =====================================================
+   CHATBOT – GLOBAL FIX
+===================================================== */
+
+/* Ẩn chat window (chống CSS khác đè) */
+#chatbot-window.hidden {
+  display: none !important;
+}
+
+/* =====================================================
+   CHATBOT ICON (Floating button)
+===================================================== */
+
+#chatbot-icon {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(135deg, #1e90ff, #1c7ed6);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  cursor: grab;
+  z-index: 9999;
+  box-shadow: 0 6px 18px rgba(30, 144, 255, 0.35);
+}
+
+#chatbot-icon:active {
+  cursor: grabbing;
+}
+
+/* =====================================================
+   CHAT WINDOW
+===================================================== */
+
+#chatbot-window {
+  position: fixed;
+  bottom: 96px;
+  right: 24px;
+  width: 340px;
+  height: 460px;
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+  display: flex;
+  flex-direction: column;
+  z-index: 9999;
+  overflow: hidden;
+  font-family: "Inter", sans-serif;
+}
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.chat-header {
+  padding: 12px 14px;
+  background: linear-gradient(135deg, #1e90ff, #1c7ed6);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.chat-header span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Close button */
+#chatbot-close {
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  color: white;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+}
+
+#chatbot-close:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* =====================================================
+   MESSAGES AREA
+===================================================== */
+
+#chatbot-messages {
+  flex: 1;
+  padding: 12px;
+  overflow-y: auto;
+  background: #f8f9fa;
+  font-size: 14px;
+}
+
+/* Message bubble */
+.msg {
+  max-width: 80%;
+  padding: 8px 12px;
+  border-radius: 12px;
+  margin-bottom: 8px;
+  line-height: 1.4;
+  word-wrap: break-word;
+}
+
+/* User message */
+.msg.user {
+  background: #1e90ff;
+  color: white;
+  margin-left: auto;
+  border-bottom-right-radius: 4px;
+}
+
+/* Bot message */
+.msg.bot {
+  background: #e9ecef;
+  color: #333;
+  margin-right: auto;
+  border-bottom-left-radius: 4px;
+}
+
+/* =====================================================
+   INPUT AREA
+===================================================== */
+
+.chat-input {
+  display: flex;
+  padding: 10px;
+  border-top: 1px solid #e0e0e0;
+  background: #ffffff;
+  gap: 8px;
+}
+
+.chat-input input {
+  flex: 1;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  outline: none;
+  font-size: 14px;
+}
+
+.chat-input input:focus {
+  border-color: #1e90ff;
+}
+
+/* Send button */
+.chat-input button {
+  background: #1e90ff;
+  color: white;
+  border: none;
+  padding: 0 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s ease;
+}
+
+.chat-input button:hover {
+  background: #1c7ed6;
+}

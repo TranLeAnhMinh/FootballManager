@@ -1,71 +1,66 @@
 package com.example.footballmanagement.controller.images;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.footballmanagement.dto.common.ImageUploadResult;
+import com.example.footballmanagement.service.ImageStorageService;
+import com.example.footballmanagement.service.PitchService;
+
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/api/adminsystem/images")
+@RequiredArgsConstructor
 @Slf4j
 public class ImageUploadController {
 
-    // 🔹 Đường dẫn thư mục chứa ảnh trong project
-    private static final String UPLOAD_DIR = "src/main/resources/static/images/pitchimages/";
+    private final ImageStorageService imageStorageService;
+    private final PitchService pitchService;
 
     @PostMapping("/upload")
     public ResponseEntity<?> uploadPitchImage(@RequestParam("file") MultipartFile file) {
         try {
-            // 🔹 Kiểm tra file
-            if (file.isEmpty()) {
-                return ResponseEntity.badRequest().body("❌ File upload is empty");
-            }
+            ImageUploadResult result = imageStorageService.upload(file, "pitchimages");
 
-            // 🔹 Lấy tên gốc của file
-            String originalFileName = file.getOriginalFilename();
-            if (originalFileName == null || originalFileName.isBlank()) {
-                return ResponseEntity.badRequest().body("❌ Invalid file name");
-            }
+            Map<String, Object> response = new LinkedHashMap<>();
+            response.put("message", "Upload successful");
+            response.put("url", result.getUrl());
+            response.put("publicId", result.getPublicId());
+            response.put("originalFileName", result.getOriginalFileName());
 
-            // 🔹 Tạo tên file unique
-            String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
-            String uuidShort = UUID.randomUUID().toString().substring(0, 8);
-            String uniqueName = timestamp + "_" + uuidShort + "_" + originalFileName;
+            log.info("Uploaded image to Cloudinary: url={}, publicId={}", result.getUrl(), result.getPublicId());
 
-            // 🔹 Tạo folder nếu chưa tồn tại
-            Path uploadPath = Paths.get(UPLOAD_DIR);
-            if (!Files.exists(uploadPath)) {
-                Files.createDirectories(uploadPath);
-            }
+            return ResponseEntity.ok(response);
 
-            // 🔹 Ghi file
-            Path filePath = uploadPath.resolve(uniqueName);
-            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IllegalArgumentException e) {
+            log.warn("Invalid upload request: {}", e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
 
-            // 🔹 Tạo URL public để lưu vào DB
-            String fileUrl = "/images/pitchimages/" + uniqueName;
-            log.info("✅ Uploaded: {}", fileUrl);
-
-            return ResponseEntity.ok(fileUrl);
-
-        } catch (IOException e) {
-            log.error("❌ Upload error: {}", e.getMessage());
+        } catch (RuntimeException e) {
+            log.error("Upload failed: {}", e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Upload failed: " + e.getMessage());
         }
+    }
+
+    @DeleteMapping("/{imageId}")
+    public ResponseEntity<?> deleteImage(@PathVariable UUID imageId) {
+
+        pitchService.deletePitchImage(imageId);
+
+        return ResponseEntity.ok("Image deleted successfully");
     }
 }

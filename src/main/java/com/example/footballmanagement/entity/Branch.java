@@ -34,7 +34,7 @@ public class Branch {
     private String description;
 
     // 1 branch chỉ có 1 admin (user)
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "admin_id", unique = true)
     private User admin;
 

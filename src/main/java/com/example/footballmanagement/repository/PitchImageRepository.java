@@ -18,5 +18,7 @@ public interface PitchImageRepository extends JpaRepository<PitchImage, UUID> {
 
     // Tìm tất cả ảnh phụ (isCover = false)
     List<PitchImage> findByPitch_IdAndIsCoverFalse(UUID pitchId);
+
+    List<PitchImage> findByPitch_Id(UUID pitchId);
     
 }

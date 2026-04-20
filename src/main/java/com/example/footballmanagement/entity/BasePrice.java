@@ -48,7 +48,7 @@ public class BasePrice {
     private Pitch pitch;
 
     @Column(name = "day_of_week", nullable = false)
-    private Short dayOfWeek;  // 0 = Chủ nhật, 1..6 = Thứ 2..Thứ 7
+    private Short dayOfWeek;  // 1 = Thứ 2, 2 = Thứ 3, ... 6 = Thứ 7, 7 = Chủ nhật
 
     @Column(name = "time_start", nullable = false)
     private LocalTime timeStart;

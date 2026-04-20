@@ -74,4 +74,11 @@ public class Endpoint {
     public static final String REVENUE_BRANCH_ENDPOINT = "/api/revenue/branch/**";  // API cho admin chi nhánh xem doanh thu
     public static final String REVENUE_ADMIN_SYSTEM_ENDPOINT = "/api/adminsystem/revenue/**";
 
+    // ================= REVIEW =================
+    public static final String REVIEW_ENDPOINT = "/api/pitches/*/reviews/**"; // security matcher
+    public static final String REVIEW_API_BASE = "/api/pitches/{pitchId}/reviews"; // controller base
+
+    // ================= BASE PRICE (ADMIN SYSTEM) =================
+    public static final String BASE_PRICE_ADMIN_SYSTEM_API_BASE = "/api/adminsystem/base-prices";
+    public static final String BASE_PRICE_ADMIN_SYSTEM_ENDPOINT = "/api/adminsystem/base-prices/**";
 }

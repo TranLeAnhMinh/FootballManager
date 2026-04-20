@@ -1,6 +1,8 @@
 package com.example.footballmanagement.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -31,7 +33,6 @@ public class ReviewServiceImpl implements ReviewService {
     private final UserRepository userRepository;
     private final BookingRepository bookingRepository;
 
-
     @Override
     public List<ReviewResponse> getReviewsByPitch(UUID pitchId) {
         return reviewRepository.findByPitch_Id(pitchId).stream()
@@ -41,34 +42,36 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     @Transactional
-    public ReviewResponse addOrUpdateReview(UUID pitchId, ReviewRequest request) {  
+    public ReviewResponse addOrUpdateReview(UUID pitchId, UUID userId, ReviewRequest request) {
         Pitch pitch = pitchRepository.findById(pitchId)
-            .orElseThrow(() -> new RuntimeException("Pitch not found: " + pitchId));
-         User user = userRepository.findById(request.getUserId())
-            .orElseThrow(() -> new RuntimeException("User not found: " + request.getUserId()));
-        
+                .orElseThrow(() -> new RuntimeException("Pitch not found: " + pitchId));
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found: " + userId));
+
         boolean hasBooking = bookingRepository.existsByUser_IdAndPitch_IdAndStatusIn(
-            user.getId(),
-            pitch.getId(),
-            List.of(BookingStatus.APPROVED, BookingStatus.CHECKED_IN)
+                user.getId(),
+                pitch.getId(),
+                List.of(BookingStatus.APPROVED, BookingStatus.CHECKED_IN)
         );
+
         if (!hasBooking) {
             throw new IllegalStateException("Bạn chưa từng đặt sân này nên không thể đánh giá.");
         }
 
         Review review = reviewRepository.findByPitch_IdAndUser_Id(pitchId, user.getId())
                 .orElse(null);
-        
+
         if (review == null) {
             review = ConverterUtil.fromReviewRequest(pitch, user, request);
         } else {
             review.setRating(request.getRating());
             review.setContent(request.getContent());
-        }        
+        }
 
         Review saved = reviewRepository.save(review);
         return ConverterUtil.toReviewResponse(saved);
-}
+    }
 
     @Override
     public double getAverageRating(UUID pitchId) {
@@ -82,8 +85,25 @@ public class ReviewServiceImpl implements ReviewService {
                 .average()
                 .orElse(0.0);
 
-        // Làm tròn về 0.5 (3.4 -> 3.5, 3.6 -> 3.5)
         return roundToHalf(avg);
+    }
+
+    @Override
+    public Map<UUID, Double> getAverageRatingMap(List<UUID> pitchIds) {
+        if (pitchIds == null || pitchIds.isEmpty()) {
+            return Map.of();
+        }
+
+        List<Object[]> rows = reviewRepository.findAverageRatingByPitchIds(pitchIds);
+        Map<UUID, Double> result = new HashMap<>();
+
+        for (Object[] row : rows) {
+            UUID pitchId = (UUID) row[0];
+            Double avg = row[1] == null ? 0.0 : ((Number) row[1]).doubleValue();
+            result.put(pitchId, roundToHalf(avg));
+        }
+
+        return result;
     }
 
     private double roundToHalf(double value) {

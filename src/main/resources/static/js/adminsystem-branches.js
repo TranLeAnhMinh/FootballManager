@@ -41,26 +41,44 @@ async function loadAdminBranches() {
                         </p>
                     </div>
 
-                    <button class="btn-add-pitch" onclick="openPitchModal('${b.id}', '${b.name}')">
-                         ${`+ ${i18n.addPitch}`}
+                    <button class="btn-add-pitch" onclick="openPitchModal('${b.id}', '${escapeHtml(b.name)}')">
+                        ${`+ ${i18n.addPitch}`}
                     </button>
                 </div>
 
                 <p class="branch-description">${b.description || ""}</p>
 
                 <div class="admin-pitch-list">
-                    ${b.pitches.map(p => `
+                    ${(b.pitches || []).map(p => `
                         <div class="admin-pitch-card" onclick="goToPitch('${p.id}')">
                             <div class="pitch-content">
-                                <h4>${p.name}</h4>
-                                <p><i class="fa-solid fa-map"></i> ${p.location}</p>
-                                <p>${p.description}</p>
 
-                                <p>
-                                    ${p.active
-                                        ? `<span class="status-tag active">${i18n.statusActive}</span>`
-                                        : `<span class="status-tag inactive">${i18n.statusInactive}</span>`}
-                                </p>
+                                <div class="pitch-title-row">
+                                    <h4>${p.name}</h4>
+
+                                    ${p.priceConfigComplete
+                                        ? ``
+                                        : `
+                                            <span class="price-warning-badge" title="${i18n.priceConfigMissing}">
+                                                <i class="fa-solid fa-triangle-exclamation"></i>
+                                            </span>
+                                        `}
+                                </div>
+
+                                <p><i class="fa-solid fa-map"></i> ${p.location || ""}</p>
+                                <p>${p.description || ""}</p>
+
+                                <div class="pitch-bottom-row">
+                                    <p>
+                                        ${p.active
+                                            ? `<span class="status-tag active">${i18n.statusActive}</span>`
+                                            : `<span class="status-tag inactive">${i18n.statusInactive}</span>`}
+                                    </p>
+
+                                    ${p.priceConfigComplete
+                                        ? ``
+                                        : `<span class="price-missing-text">${i18n.priceConfigMissingShort}</span>`}
+                                </div>
                             </div>
                         </div>
                     `).join("")}
@@ -88,14 +106,12 @@ function openPitchModal(branchId, branchName) {
     new bootstrap.Modal(document.getElementById("createPitchModal")).show();
 }
 
-
 document.getElementById("createPitchForm").addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const form = e.target;
     const fd = new FormData();
 
-    // 🔹 Tạo JSON pitch
     const pitchJson = {
         branchId: form.branchId.value,
         name: form.name.value,
@@ -104,10 +120,8 @@ document.getElementById("createPitchForm").addEventListener("submit", async (e) 
         pitchTypeId: form.pitchTypeId.value
     };
 
-    // 🔹 ĐÚNG FORMAT BACKEND CẦN → "pitch": "{json}"
     fd.append("pitch", JSON.stringify(pitchJson));
 
-    // 🔹 File ảnh
     const files = form.file.files;
     for (let f of files) {
         fd.append("file", f);
@@ -129,6 +143,7 @@ document.getElementById("createPitchForm").addEventListener("submit", async (e) 
     loadAdminBranches();
     bootstrap.Modal.getInstance(document.getElementById("createPitchModal")).hide();
 });
+
 document.getElementById("pitchFiles").addEventListener("change", function () {
     const label = document.getElementById("fileText");
     const info = document.getElementById("fileInfo");
@@ -143,3 +158,13 @@ document.getElementById("pitchFiles").addEventListener("change", function () {
 
     label.innerText = i18n.chooseFile;
 });
+
+function escapeHtml(str) {
+    if (!str) return "";
+    return str
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#39;");
+}

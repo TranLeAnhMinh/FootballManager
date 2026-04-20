@@ -26,4 +26,6 @@ public class PitchSummaryResponse {
 
     // Điểm đánh giá trung bình (tính từ các review)
     private Double averageRating;
+
+    private boolean priceConfigComplete;
 }

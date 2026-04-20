@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,6 +23,7 @@ import com.example.footballmanagement.dto.request.PitchUpdateRequest;
 import com.example.footballmanagement.dto.request.PitchesFilterRequestDto;
 import com.example.footballmanagement.dto.response.PitchCreateResponse;
 import com.example.footballmanagement.dto.response.PitchDetaiAdminsystemlResponse;
+import com.example.footballmanagement.dto.response.PitchImageResponse;
 import com.example.footballmanagement.dto.response.PitchResponseDto;
 import com.example.footballmanagement.dto.response.PitchUpdateResponse;
 import com.example.footballmanagement.service.PitchService;
@@ -82,4 +84,20 @@ public ResponseEntity<PitchUpdateResponse> updatePitch(
     PitchUpdateResponse response = pitchService.updatePitch(id, request);
     return ResponseEntity.ok(response);
 }
+
+  /**
+     * API: Thêm nhiều ảnh vào pitch đã tồn tại
+     * POST /api/adminsystem/pitches/{pitchId}/images
+     */
+    @PostMapping(
+            value = "/{pitchId}/images",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE
+    )
+    public ResponseEntity<List<PitchImageResponse>> addPitchImages(
+            @PathVariable UUID pitchId,
+            @RequestParam("files") List<MultipartFile> files
+    ) {
+        List<PitchImageResponse> response = pitchService.addPitchImages(pitchId, files);
+        return ResponseEntity.ok(response);
+    }
 }

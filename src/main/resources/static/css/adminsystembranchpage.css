@@ -245,3 +245,52 @@
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
 }
+
+
+/* ===== PRICE CONFIG WARNING ===== */
+.pitch-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.pitch-title-row h4 {
+  margin: 0;
+}
+
+.price-warning-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #fff7ed;
+  color: #ea580c;
+  border: 1px solid #fdba74;
+  flex-shrink: 0;
+}
+
+.price-warning-badge i {
+  font-size: 14px;
+}
+
+.pitch-bottom-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.pitch-bottom-row p {
+  margin: 0;
+}
+
+.price-missing-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: #ea580c;
+  white-space: nowrap;
+}

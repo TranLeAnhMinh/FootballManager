@@ -7,13 +7,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class PitchImageResponse {
+
     private UUID id;
     private String url;
-    private boolean isCover; 
+    private String publicId;
+    private boolean isCover;
 }

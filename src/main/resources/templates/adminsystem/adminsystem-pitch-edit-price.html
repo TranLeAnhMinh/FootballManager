@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{pitch.edit.price}">Edit Price</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+    <link rel="stylesheet" th:href="@{/css/booking.css}">
+    <link rel="stylesheet" th:href="@{/css/pitch-edit-price.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="home-container">
+
+    <div th:replace="layouts/adminsystemsidebar :: adminSystemSidebar"></div>
+
+    <div class="main-content">
+
+        <div class="page-header mb-4">
+            <h2 th:text="#{pitch.edit.price}">Edit Price</h2>
+        </div>
+
+        <section class="pitch-summary-section mb-4">
+            <div id="pitchSummaryContainer">
+                <p th:text="#{branch.loading}">Loading...</p>
+            </div>
+        </section>
+
+        <section id="calendarContainer" class="price-page-grid">
+            <div id="calendar" class="price-grid-panel">
+                <div class="section-header d-flex justify-content-between align-items-start gap-3 flex-wrap">
+                    <div>
+                        <h3 th:text="#{pitch.price.weeklyGrid}">Weekly Price Grid</h3>
+                        <p class="section-desc" th:text="#{pitch.price.weeklyGrid.desc}">
+                            Click on any cell to edit the price for that time slot.
+                        </p>
+                    </div>
+
+                    <div class="section-actions">
+                        <button
+                            type="button"
+                            class="btn btn-success"
+                            id="openBulkApplyBtn"
+                            data-bs-toggle="modal"
+                            data-bs-target="#bulkApplyModal">
+                            <i class="fas fa-layer-group me-2"></i>
+                            <span th:text="#{pitch.price.bulkApply}">Apply by Time Range</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="priceGridContainer">
+                    <p th:text="#{branch.loading}">Loading...</p>
+                </div>
+            </div>
+
+            <aside id="blockedList" class="price-help-panel">
+                <div class="help-panel-header">
+                    <h4 th:text="#{pitch.price.helpTitle}">Instructions</h4>
+                </div>
+
+                <ul class="price-help-list">
+                    <li th:text="#{pitch.price.help1}">Click a cell to edit its price.</li>
+                    <li th:text="#{pitch.price.help2}">Gray cells mean the slot has not been configured yet.</li>
+                    <li th:text="#{pitch.price.help3}">Configured cells will show the current price.</li>
+                    <li th:text="#{pitch.price.help4}">Each cell represents exactly one 45-minute block.</li>
+                </ul>
+            </aside>
+        </section>
+
+        <div class="page-actions mt-4">
+            <a th:href="@{/adminsystem/pitches/{pitchId}(pitchId=${pitchId})}" class="back-btn" id="backBtn">
+                ← Back
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- =============== MODAL BULK APPLY =============== -->
+<div class="modal fade" id="bulkApplyModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" th:text="#{pitch.price.bulkApply}">Apply by Time Range</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <form id="bulkApplyForm">
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold" th:text="#{pitch.price.bulkApply.desc}">
+                            Apply the same price to multiple days and one time range
+                        </label>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold" th:text="#{pitch.price.days}">Days of week</label>
+                        <div class="d-flex flex-wrap gap-3" id="bulkDayCheckboxGroup">
+                            <div class="form-check">
+                                <input class="form-check-input bulk-day-checkbox" type="checkbox" value="1" id="bulkDay1">
+                                <label class="form-check-label" for="bulkDay1" th:text="#{weekday.mon}">Mon</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input bulk-day-checkbox" type="checkbox" value="2" id="bulkDay2">
+                                <label class="form-check-label" for="bulkDay2" th:text="#{weekday.tue}">Tue</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input bulk-day-checkbox" type="checkbox" value="3" id="bulkDay3">
+                                <label class="form-check-label" for="bulkDay3" th:text="#{weekday.wed}">Wed</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input bulk-day-checkbox" type="checkbox" value="4" id="bulkDay4">
+                                <label class="form-check-label" for="bulkDay4" th:text="#{weekday.thu}">Thu</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input bulk-day-checkbox" type="checkbox" value="5" id="bulkDay5">
+                                <label class="form-check-label" for="bulkDay5" th:text="#{weekday.fri}">Fri</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input bulk-day-checkbox" type="checkbox" value="6" id="bulkDay6">
+                                <label class="form-check-label" for="bulkDay6" th:text="#{weekday.sat}">Sat</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input bulk-day-checkbox" type="checkbox" value="7" id="bulkDay7">
+                                <label class="form-check-label" for="bulkDay7" th:text="#{weekday.sun}">Sun</label>
+                            </div>
+                        </div>
+                    </div>
+
+                   <div class="row">
+    <div class="col-md-6 mb-3">
+        <label class="form-label fw-semibold" for="bulkStartTime" th:text="#{pitch.price.startTime}">Start time</label>
+        <select id="bulkStartTime" class="form-select"></select>
+    </div>
+
+    <div class="col-md-6 mb-3">
+        <label class="form-label fw-semibold" for="bulkEndTime" th:text="#{pitch.price.endTime}">End time</label>
+        <select id="bulkEndTime" class="form-select"></select>
+    </div>
+</div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold" for="bulkPriceValue" th:text="#{pitch.price.value}">Price</label>
+                        <input id="bulkPriceValue" type="number" class="form-control" min="1" step="1000">
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                    th:text="#{modal.cancel}">
+                    Cancel
+                </button>
+
+                <button
+                    type="button"
+                    class="btn btn-success"
+                    id="saveBulkApplyBtn"
+                    th:text="#{pitch.price.bulkApply}">
+                    Apply
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- =============== MODAL EDIT ONE CELL =============== -->
+<div class="modal fade" id="editPriceModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" th:text="#{pitch.edit.price}">Edit Price</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label fw-semibold" th:text="#{pitch.price.day}">Day</label>
+                    <div id="editPriceDay" class="form-control bg-light"></div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold" th:text="#{pitch.price.timeRange}">Time Range</label>
+                    <div id="editPriceTime" class="form-control bg-light"></div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold" th:text="#{pitch.price.state}">State</label>
+                    <div id="editPriceState" class="form-control bg-light"></div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold" for="editPriceValue" th:text="#{pitch.price.value}">Price</label>
+                    <input id="editPriceValue" type="number" class="form-control" min="1" step="1000">
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                    th:text="#{modal.cancel}">
+                    Cancel
+                </button>
+
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    id="savePriceBtn"
+                    th:text="#{modal.save}">
+                    Save
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    const pitchId = /*[[${pitchId}]]*/ null;
+
+    const i18n = {
+        loading: /*[[#{branch.loading}]]*/ "Loading...",
+        error: /*[[#{branch.error}]]*/ "Error",
+        branch: /*[[#{pitch.branch}]]*/ "Branch: ",
+        location: /*[[#{pitch.location}]]*/ "Location: ",
+        type: /*[[#{pitch.type}]]*/ "Type: ",
+        status: /*[[#{pitch.status}]]*/ "Status: ",
+        active: /*[[#{pitch.active}]]*/ "Active",
+        inactive: /*[[#{pitch.inactive}]]*/ "Inactive",
+        back: /*[[#{pitch.back.detail}]]*/ "← Back to Pitch Detail",
+
+        time: /*[[#{pitch.price.time}]]*/ "Time",
+        day1: /*[[#{weekday.mon}]]*/ "Mon",
+        day2: /*[[#{weekday.tue}]]*/ "Tue",
+        day3: /*[[#{weekday.wed}]]*/ "Wed",
+        day4: /*[[#{weekday.thu}]]*/ "Thu",
+        day5: /*[[#{weekday.fri}]]*/ "Fri",
+        day6: /*[[#{weekday.sat}]]*/ "Sat",
+        day7: /*[[#{weekday.sun}]]*/ "Sun",
+
+        configured: /*[[#{pitch.price.configured}]]*/ "Configured",
+        notConfigured: /*[[#{pitch.price.notConfigured}]]*/ "Not set",
+        noPriceData: /*[[#{pitch.price.none}]]*/ "No price data",
+        priceTooltip: /*[[#{pitch.price.value}]]*/ "Price",
+        invalidPrice: /*[[#{pitch.price.invalid}]]*/ "Price must be greater than 0",
+        updateFailed: /*[[#{pitch.price.updateFailed}]]*/ "Failed to update price",
+        updateError: /*[[#{pitch.price.updateError}]]*/ "An error occurred while updating price",
+
+        bulkApply: /*[[#{pitch.price.bulkApply}]]*/ "Apply by Time Range",
+        bulkApplyFailed: /*[[#{pitch.price.bulkApplyFailed}]]*/ "Failed to apply price template",
+        bulkApplyError: /*[[#{pitch.price.bulkApplyError}]]*/ "An error occurred while applying price template",
+        bulkApplyInvalidDays: /*[[#{pitch.price.bulkApplyInvalidDays}]]*/ "Please select at least one day",
+        bulkApplyInvalidTime: /*[[#{pitch.price.bulkApplyInvalidTime}]]*/ "Please enter a valid time range",
+        bulkApplyInvalidPrice: /*[[#{pitch.price.bulkApplyInvalidPrice}]]*/ "Price must be greater than 0",
+        startTime: /*[[#{pitch.price.startTime}]]*/ "Start time",
+        endTime: /*[[#{pitch.price.endTime}]]*/ "End time",
+    };
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/adminsystem-pitch-edit-price.js"></script>
+</body>
+</html>

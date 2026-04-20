@@ -18,7 +18,6 @@ public class PitchDetailAdminsystemPageController {
             Model model,
             HttpServletRequest request
     ) {
-
         // đánh dấu active sidebar
         model.addAttribute("activePage", "pitchManagement");
 
@@ -29,5 +28,23 @@ public class PitchDetailAdminsystemPageController {
         model.addAttribute("currentPath", request.getRequestURI());
 
         return "adminsystem/adminsystem-pitch-detail";
+    }
+
+    @GetMapping("/adminsystem/pitches/{pitchId}/edit-price")
+    public String adminSystemPitchEditPricePage(
+            @PathVariable("pitchId") UUID pitchId,
+            Model model,
+            HttpServletRequest request
+    ) {
+        // đánh dấu active sidebar
+        model.addAttribute("activePage", "pitchManagement");
+
+        // truyền pitchId nếu sau này cần dùng ở FE
+        model.addAttribute("pitchId", pitchId);
+
+        // phục vụ langswitcher
+        model.addAttribute("currentPath", request.getRequestURI());
+
+        return "adminsystem/adminsystem-pitch-edit-price";
     }
 }

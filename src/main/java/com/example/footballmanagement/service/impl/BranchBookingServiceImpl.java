@@ -1,8 +1,14 @@
 package com.example.footballmanagement.service.impl;
 
+import java.time.OffsetDateTime;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,9 +38,6 @@ public class BranchBookingServiceImpl implements BranchBookingService {
     private final BranchRepository branchRepo;
     private final EmailTemplateService emailTemplateService;
 
-    // ============================================================
-    // ✅ Lấy danh sách booking của chi nhánh
-    // ============================================================
     @Override
     @Transactional(readOnly = true)
     public Page<BranchBookingResponse> getBookingsOfAdminBranch(UUID adminId,
@@ -44,74 +47,95 @@ public class BranchBookingServiceImpl implements BranchBookingService {
                 .orElseThrow(() -> new IllegalArgumentException("Admin is not managing any branch"));
         UUID branchId = branch.getId();
 
-        Page<Booking> bookings = bookingRepo.findBranchBookings(
+        boolean hasStartDate = filter.getStartDate() != null;
+        boolean hasEndDate = filter.getEndDate() != null;
+
+        OffsetDateTime safeStartDate = hasStartDate
+                ? filter.getStartDate()
+                : OffsetDateTime.parse("1970-01-01T00:00:00+00:00");
+
+        OffsetDateTime safeEndDate = hasEndDate
+                ? filter.getEndDate()
+                : OffsetDateTime.parse("9999-12-31T23:59:59+00:00");
+
+        Page<UUID> bookingIdPage = bookingRepo.findBranchBookingIds(
                 branchId,
                 filter.getStatus(),
                 filter.getPitchName(),
                 filter.getUserKeyword(),
-                filter.getStartDate(),
-                filter.getEndDate(),
+                hasStartDate,
+                safeStartDate,
+                hasEndDate,
+                safeEndDate,
                 pageable
         );
 
-        return bookings.map(ConverterUtil::toBranchBookingResponse);
-    }
-
-// ============================================================
-// ✅ Cập nhật trạng thái booking
-// ============================================================
-@Override
-@Transactional
-public UpdateBookingStatusResponse updateBookingStatus(UUID adminId, UpdateBookingStatusRequest request) {
-    log.info("🔄 Admin {} yêu cầu cập nhật trạng thái booking {}", adminId, request.getBookingId());
-
-    // 1️⃣ Xác minh chi nhánh của admin
-    Branch branch = branchRepo.findByAdmin_Id(adminId)
-            .orElseThrow(() -> new IllegalArgumentException("Admin is not managing any branch"));
-
-    // 2️⃣ Tìm booking
-    Booking booking = bookingRepo.findById(UUID.fromString(request.getBookingId()))
-            .orElseThrow(() -> new IllegalArgumentException("Booking not found"));
-
-    // 3️⃣ Kiểm tra booking có thuộc chi nhánh admin không
-    if (!booking.getBranch().getId().equals(branch.getId())) {
-        throw new IllegalStateException("Booking does not belong to your branch");
-    }
-
-    // 4️⃣ Kiểm tra trạng thái hợp lệ
-    BookingStatus oldStatus = booking.getStatus();
-    BookingStatus newStatus = request.getNewStatus();
-
-    boolean validTransition =
-            (oldStatus == BookingStatus.APPROVED && newStatus == BookingStatus.WAITING_REFUND) ||
-            (oldStatus == BookingStatus.WAITING_REFUND && newStatus == BookingStatus.REFUNDED);
-
-    if (!validTransition) {
-        throw new IllegalStateException("Invalid status transition: " + oldStatus + " → " + newStatus);
-    }
-
-    // 5️⃣ Cập nhật trạng thái (❌ KHÔNG ghi đè note của khách)
-    booking.setStatus(newStatus);
-    bookingRepo.save(booking);
-
-    // 6️⃣ Gửi mail phù hợp (dùng adminNote)
-    try {
-        if (newStatus == BookingStatus.WAITING_REFUND) {
-            emailTemplateService.sendWaitingRefundNotice(booking, request.getAdminNote());
-        } else if (newStatus == BookingStatus.REFUNDED) {
-            emailTemplateService.sendRefundedNotice(booking, request.getAdminNote());
+        if (bookingIdPage.isEmpty()) {
+            return Page.empty(pageable);
         }
-    } catch (Exception e) {
-        log.error("❌ Lỗi khi gửi mail trạng thái {} cho {}: {}", newStatus, booking.getUser().getEmail(), e.getMessage());
+
+        List<UUID> ids = bookingIdPage.getContent();
+        List<Booking> bookings = bookingRepo.findBranchBookingsWithDetailsByIds(ids);
+
+        Map<UUID, Integer> orderMap = new HashMap<>();
+        for (int i = 0; i < ids.size(); i++) {
+            orderMap.put(ids.get(i), i);
+        }
+
+        bookings.sort(Comparator.comparingInt(b -> orderMap.getOrDefault(b.getId(), Integer.MAX_VALUE)));
+
+        List<BranchBookingResponse> content = bookings.stream()
+                .map(ConverterUtil::toBranchBookingResponse)
+                .toList();
+
+        return new PageImpl<>(content, pageable, bookingIdPage.getTotalElements());
     }
 
-    // 7️⃣ Trả response
-    return UpdateBookingStatusResponse.builder()
-            .bookingId(booking.getId().toString())
-            .oldStatus(oldStatus)
-            .newStatus(newStatus)
-            .adminNote(request.getAdminNote())
-            .message("Booking status updated and notification sent successfully.")
-            .build();
-}
+    @Override
+    @Transactional
+    public UpdateBookingStatusResponse updateBookingStatus(UUID adminId, UpdateBookingStatusRequest request) {
+        log.info("🔄 Admin {} yêu cầu cập nhật trạng thái booking {}", adminId, request.getBookingId());
+
+        Branch branch = branchRepo.findByAdmin_Id(adminId)
+                .orElseThrow(() -> new IllegalArgumentException("Admin is not managing any branch"));
+
+        Booking booking = bookingRepo.findById(UUID.fromString(request.getBookingId()))
+                .orElseThrow(() -> new IllegalArgumentException("Booking not found"));
+
+        if (!booking.getBranch().getId().equals(branch.getId())) {
+            throw new IllegalStateException("Booking does not belong to your branch");
+        }
+
+        BookingStatus oldStatus = booking.getStatus();
+        BookingStatus newStatus = request.getNewStatus();
+
+        boolean validTransition =
+                (oldStatus == BookingStatus.APPROVED && newStatus == BookingStatus.WAITING_REFUND) ||
+                (oldStatus == BookingStatus.WAITING_REFUND && newStatus == BookingStatus.REFUNDED);
+
+        if (!validTransition) {
+            throw new IllegalStateException("Invalid status transition: " + oldStatus + " → " + newStatus);
+        }
+
+        booking.setStatus(newStatus);
+        bookingRepo.save(booking);
+
+        try {
+            if (newStatus == BookingStatus.WAITING_REFUND) {
+                emailTemplateService.sendWaitingRefundNotice(booking, request.getAdminNote());
+            } else if (newStatus == BookingStatus.REFUNDED) {
+                emailTemplateService.sendRefundedNotice(booking, request.getAdminNote());
+            }
+        } catch (Exception e) {
+            log.error("❌ Lỗi khi gửi mail trạng thái {} cho {}: {}", newStatus, booking.getUser().getEmail(), e.getMessage());
+        }
+
+        return UpdateBookingStatusResponse.builder()
+                .bookingId(booking.getId().toString())
+                .oldStatus(oldStatus)
+                .newStatus(newStatus)
+                .adminNote(request.getAdminNote())
+                .message("Booking status updated and notification sent successfully.")
+                .build();
+    }
 }

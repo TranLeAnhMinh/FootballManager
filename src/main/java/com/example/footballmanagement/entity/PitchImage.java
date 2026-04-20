@@ -29,6 +29,9 @@ public class PitchImage {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String url;
 
+    @Column(name = "public_id")
+    private String publicId;
+
     @Builder.Default
     @Column(name = "is_cover", nullable = false)
     private boolean isCover = false;

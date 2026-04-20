@@ -34,5 +34,6 @@ public class BranchResponse {
         private boolean active;
         private Short pitchTypeId;
         private String pitchTypeName;
+        private boolean priceConfigComplete;
     }
 }

@@ -45,7 +45,7 @@
 
 /* Nút booking */
 .booking-btn {
-    margin-top: 12px; /* ✅ thêm khoảng cách dưới status */
+    margin-top: 0; /* ✅ thêm khoảng cách dưới status */
     display: inline-block;
     padding: 10px 16px;
     background: #10b981; /* xanh ngọc */
@@ -279,5 +279,325 @@
     .pitch-detail-img {
         max-width: 100%;
         height: 240px;
+    }
+}
+
+/* ===== REVIEW FORM ===== */
+.review-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+}
+
+.review-header h4 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: #111827;
+}
+
+.review-form-wrapper {
+    margin-bottom: 24px;
+    padding: 18px;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+}
+
+.review-form-header {
+    margin-bottom: 14px;
+}
+
+.review-form-header h4 {
+    margin: 0 0 6px;
+    font-size: 20px;
+    font-weight: 700;
+    color: #111827;
+}
+
+.review-auth-message {
+    margin: 0;
+    font-size: 14px;
+    color: #6b7280;
+    line-height: 1.5;
+}
+
+.review-auth-message a {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.review-auth-message a:hover {
+    text-decoration: underline;
+}
+
+.review-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.review-form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.review-form-row label {
+    font-size: 15px;
+    font-weight: 600;
+    color: #111827;
+}
+
+.review-select-wrap {
+    max-width: 220px;
+}
+
+.review-select {
+    width: 100%;
+    border-radius: 10px;
+    border: 1px solid #d1d5db;
+    padding: 10px 12px;
+    font-size: 15px;
+    background: #fff;
+    color: #111827;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.review-select:focus {
+    outline: none;
+    border-color: #10b981;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+}
+
+.review-textarea {
+    width: 100%;
+    min-height: 110px;
+    border-radius: 10px;
+    border: 1px solid #d1d5db;
+    padding: 12px 14px;
+    font-size: 15px;
+    color: #111827;
+    resize: vertical;
+    background: #fff;
+    box-sizing: border-box;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.review-textarea:focus {
+    outline: none;
+    border-color: #10b981;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+}
+
+.review-form-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.review-form-actions .booking-btn {
+    margin-top: 0;
+}
+
+.reviews-list {
+    margin-top: 8px;
+}
+
+.review-card {
+    padding: 16px 0;
+}
+
+.review-card strong {
+    display: inline-block;
+    margin-bottom: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #111827;
+}
+
+.review-card .review-stars {
+    margin-bottom: 8px;
+}
+
+.review-card p {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.6;
+    color: #374151;
+}
+
+@media (max-width: 768px) {
+    .review-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .review-form-wrapper {
+        padding: 14px;
+    }
+
+    .review-select-wrap {
+        max-width: 100%;
+    }
+
+    .review-form-actions {
+        width: 100%;
+    }
+
+    .review-form-actions .booking-btn {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+.pitch-action-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 12px;
+    align-items: center;
+}
+
+/* ===== IMAGE TOOLBAR ===== */
+.image-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin: 12px 0 20px;
+    padding: 16px 18px;
+    background: #ffffff;
+    border-radius: 14px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+    flex-wrap: wrap;
+}
+
+.image-upload-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.image-upload-label {
+    display: inline-block;
+    padding: 10px 16px;
+    background: #2563eb;
+    color: #fff;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    margin: 0;
+}
+
+.image-upload-label:hover {
+    background: #1d4ed8;
+}
+
+.image-upload-filename {
+    font-size: 14px;
+    color: #6b7280;
+    max-width: 520px;
+    word-break: break-word;
+}
+
+.image-upload-btn {
+    min-width: 150px;
+    font-weight: 600;
+    border-radius: 10px;
+}
+
+/* ===== GALLERY ITEM ===== */
+.gallery-item {
+    position: relative;
+    flex: 0 0 auto;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.gallery-item.is-cover {
+    outline: 3px solid #10b981;
+    outline-offset: 2px;
+}
+
+.gallery-item img {
+    width: 300px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+    display: block;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.gallery-item:hover img {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.gallery-overlay {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    left: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    pointer-events: none;
+}
+
+.cover-badge {
+    background: rgba(16, 185, 129, 0.95);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 6px 10px;
+    border-radius: 999px;
+    pointer-events: auto;
+}
+
+.gallery-delete-btn {
+    border: none;
+    background: rgba(239, 68, 68, 0.95);
+    color: #fff;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: auto;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.gallery-delete-btn:hover {
+    background: rgba(220, 38, 38, 1);
+    transform: scale(1.08);
+}
+
+.gallery-empty {
+    color: #6b7280;
+    font-size: 14px;
+    padding: 12px 4px;
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .image-toolbar {
+        align-items: flex-start;
+    }
+
+    .image-upload-btn {
+        width: 100%;
+    }
+
+    .image-upload-filename {
+        max-width: 100%;
     }
 }

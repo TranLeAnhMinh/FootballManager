@@ -12,6 +12,7 @@ import com.example.footballmanagement.dto.request.PitchesFilterRequestDto;
 import com.example.footballmanagement.dto.response.PitchCreateResponse;
 import com.example.footballmanagement.dto.response.PitchDetaiAdminsystemlResponse;
 import com.example.footballmanagement.dto.response.PitchDetailResponse;
+import com.example.footballmanagement.dto.response.PitchImageResponse;
 import com.example.footballmanagement.dto.response.PitchResponseDto;
 import com.example.footballmanagement.dto.response.PitchTypeBranchesResponse;
 import com.example.footballmanagement.dto.response.PitchTypeDetailResponse;
@@ -36,5 +37,10 @@ public interface PitchService {
     PitchDetaiAdminsystemlResponse getPitchDetailAdmin(UUID pitchId);
 
     PitchUpdateResponse updatePitch(UUID pitchId, PitchUpdateRequest request);
+
+    void deletePitchImage(UUID imageId);
+
+    List<PitchImageResponse> addPitchImages(UUID pitchId, List<MultipartFile> files);
+
 
 }
