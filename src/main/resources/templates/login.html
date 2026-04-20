@@ -6,9 +6,28 @@
     <link rel="stylesheet" th:href="@{/css/auth.css}">
 </head>
 <body>
+
+<div class="lang-switcher">
+    <div class="lang-dropdown" th:with="currentLang=${#locale.language}">
+        <button class="lang-btn" id="langBtn" type="button">
+            <span th:switch="${currentLang}">
+                <span th:case="'en'">English ▾</span>
+                <span th:case="'vi'">Tiếng Việt ▾</span>
+                <span th:case="'ja'">日本語 ▾</span>
+            </span>
+        </button>
+
+        <div class="lang-menu" id="langMenu">
+            <a th:href="@{/login(lang='en')}">English</a>
+            <a th:href="@{/login(lang='vi')}">Tiếng Việt</a>
+            <a th:href="@{/login(lang='ja')}">日本語</a>
+        </div>
+    </div>
+</div>
+
 <div class="auth-container">
     <div class="auth-left">
-        <img th:src="@{/images/footballmanager.svg}" alt="Football Manager Logo" class="logo"/>
+        <img th:src="@{/images/FMlogo.png}" alt="Football Manager Logo" class="logo"/>
     </div>
     <div class="auth-right">
         <h2 th:text="#{login.title}">Login</h2>
@@ -23,13 +42,14 @@
             </div>
             <button type="submit" class="auth-btn" th:text="#{login.button}">LOGIN</button>
             <div class="extra-links">
-                <a href="/register" th:text="#{login.noaccount}">Don't have an account?</a>
-                <a href="/forgotpassword" th:text="#{login.forgot}">Forgot password?</a>
+                <a th:href="@{/register(lang=${#locale.language})}" th:text="#{login.noaccount}">Don't have an account?</a>
+                <a th:href="@{/forgotpassword(lang=${#locale.language})}" th:text="#{login.forgot}">Forgot password?</a>
             </div>
         </form>
     </div>
 </div>
 
+<script src="/js/lang-switcher.js"></script>
 <script src="/js/login.js"></script>
 </body>
 </html>

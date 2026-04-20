@@ -1,5 +1,6 @@
 package com.example.footballmanagement.entity;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import jakarta.persistence.*;
@@ -41,6 +42,7 @@ public class Branch {
     @Builder.Default
     @Column(nullable = false)
     private boolean active = true;
+
 
     /* ================= Associations ================= */
 

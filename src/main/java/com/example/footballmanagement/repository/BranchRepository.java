@@ -36,4 +36,7 @@ int assignAdmin(UUID branchId, UUID userId);
 /* Lấy danh sách Branch active & chưa có admin */
 @Query("SELECT b FROM Branch b WHERE b.admin IS NULL AND b.active = true ORDER BY b.name ASC")
 List<Branch> findAvailableForAssign();
+
+ /* ================= UPDATE BRANCH ================= */
+    boolean existsByNameIgnoreCaseAndIdNot(String name, UUID id);
 }

@@ -6,7 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.example.footballmanagement.constant.Endpoint.BASE;
+import com.example.footballmanagement.config.AppProperties;
 import com.example.footballmanagement.dto.request.PasswordResetRequest;
 import com.example.footballmanagement.dto.response.PasswordResetResponse;
 import com.example.footballmanagement.entity.AccountRecovery;
@@ -20,8 +20,6 @@ import com.example.footballmanagement.utils.TokenGenerator;
 
 import lombok.RequiredArgsConstructor;
 
-
-
 @Service
 @RequiredArgsConstructor
 public class AccountRecoveryServiceImpl implements AccountRecoveryService {
@@ -30,13 +28,14 @@ public class AccountRecoveryServiceImpl implements AccountRecoveryService {
     private final AccountRecoveryRepository accountRecoveryRepository;
     private final NotificationService emailService;
     private final PasswordEncoder passwordEncoder;
-    
+    private final AppProperties appProperties;
+
     @Override
     @Transactional
     public PasswordResetResponse initiateRecovery(String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("Email not found"));
-         // clear token cũ
+
         accountRecoveryRepository.deleteByUser_Id(user.getId());
 
         String token = TokenGenerator.generateToken(30);
@@ -50,13 +49,14 @@ public class AccountRecoveryServiceImpl implements AccountRecoveryService {
 
         accountRecoveryRepository.save(recovery);
 
-        String resetLink = BASE + "/resetpassword?token=" + token;
+        String resetLink = appProperties.getBaseUrl() + "/resetpassword?token=" + token;
 
         emailService.sendSimpleMessage(
                 user.getEmail(),
                 "Password Recovery",
                 "Click this link to reset your password: " + resetLink
         );
+
         return new PasswordResetResponse("Recovery email sent", 200);
     }
 
@@ -65,7 +65,7 @@ public class AccountRecoveryServiceImpl implements AccountRecoveryService {
     public PasswordResetResponse confirmRecovery(String token, PasswordResetRequest request) {
         AccountRecovery recovery = accountRecoveryRepository.findByRecoveryToken(token)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid token"));
-        
+
         if (recovery.getExpiresAt().isBefore(OffsetDateTime.now())) {
             recovery.setStatus(RecoveryStatus.EXPIRED);
             accountRecoveryRepository.save(recovery);
@@ -78,7 +78,7 @@ public class AccountRecoveryServiceImpl implements AccountRecoveryService {
 
         recovery.setStatus(RecoveryStatus.USED);
         accountRecoveryRepository.save(recovery);
+
         return new PasswordResetResponse("Password reset successfully", 200);
     }
-    }
-
+}

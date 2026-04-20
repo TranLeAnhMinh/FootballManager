@@ -327,19 +327,31 @@ function bindBulkApplyEvents() {
         const price = Number(document.getElementById("bulkPriceValue")?.value);
 
         if (!checkedDays.length) {
-            alert(i18n.bulkApplyInvalidDays);
-            return;
-        }
+    alert(i18n.bulkApplyInvalidDays);
+    return;
+}
 
-        if (!startTime || !endTime || startTime === endTime) {
-            alert(i18n.bulkApplyInvalidTime);
-            return;
-        }
+const isFullDay = startTime === "00:00" && endTime === "00:00";
 
-        if (!price || price <= 0) {
-            alert(i18n.bulkApplyInvalidPrice);
-            return;
-        }
+if (!startTime || !endTime) {
+    alert(i18n.bulkApplyInvalidTime);
+    return;
+}
+
+if (!isFullDay && startTime === endTime) {
+    alert(i18n.bulkApplyInvalidTime);
+    return;
+}
+
+if (!isFullDay && endTime <= startTime) {
+    alert(i18n.bulkApplyInvalidTime);
+    return;
+}
+
+if (!price || price <= 0) {
+    alert(i18n.bulkApplyInvalidPrice);
+    return;
+}
 
         const payload = {
             pitchIds: [pitchId],

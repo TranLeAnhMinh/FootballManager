@@ -33,9 +33,6 @@ public interface BasePriceRepository extends JpaRepository<BasePrice, UUID> {
 
     long countByPitch_Id(UUID pitchId);
 
-    /**
-     * Lấy danh sách pitchId đã cấu hình đủ 224 block giá
-     */
     @Query("""
         SELECT bp.pitch.id
         FROM BasePrice bp
@@ -44,4 +41,20 @@ public interface BasePriceRepository extends JpaRepository<BasePrice, UUID> {
         HAVING COUNT(bp.id) = 224
     """)
     List<UUID> findFullyConfiguredPitchIds(@Param("pitchIds") List<UUID> pitchIds);
+
+    /**
+     * Load toàn bộ base price của 1 pitch theo danh sách thứ trong tuần
+     * để tránh query từng cell.
+     */
+    @Query("""
+        SELECT bp
+        FROM BasePrice bp
+        WHERE bp.pitch.id = :pitchId
+          AND bp.dayOfWeek IN :dayOfWeeks
+        ORDER BY bp.dayOfWeek ASC, bp.timeStart ASC
+    """)
+    List<BasePrice> findByPitchIdAndDayOfWeeks(
+            @Param("pitchId") UUID pitchId,
+            @Param("dayOfWeeks") List<Short> dayOfWeeks
+    );
 }

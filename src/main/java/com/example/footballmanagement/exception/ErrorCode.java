@@ -33,6 +33,9 @@ public enum ErrorCode {
     VOUCHER_MIN_ORDER(HttpStatus.BAD_REQUEST, "Order does not meet minimum amount for voucher"),
     VOUCHER_LIMIT_REACHED(HttpStatus.BAD_REQUEST, "Voucher usage limit reached for this user"),
 
+    INVALID_BRANCH_NAME(HttpStatus.BAD_REQUEST, "Branch name cannot be empty"),
+INVALID_BRANCH_LOCATION(HttpStatus.BAD_REQUEST, "Branch location cannot be empty"),
+BRANCH_NAME_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "Branch name already exists"),
     // ===== VOUCHER (ADMIN FLOW) =====
     // ===== VOUCHER (ADMIN FLOW) =====
 VOUCHER_CODE_EXISTS(HttpStatus.CONFLICT, "Voucher code already exists"),
@@ -43,6 +46,8 @@ ACTION_NOT_ALLOWED(HttpStatus.BAD_REQUEST, "Action is not allowed"),
 UPDATE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "Update failed"),
 BRANCH_ALREADY_HAVE_ADMIN(HttpStatus.BAD_REQUEST, "Branch already has admin"),
 VOUCHER_ALREADY_USED(HttpStatus.BAD_REQUEST, "Voucher has already been used and cannot be deleted");
+
+
     
 
     private final HttpStatus status;

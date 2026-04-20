@@ -14,7 +14,7 @@
 <body>
   <div class="sidebar" th:fragment="sidebar">
     <div class="logo">
-      <img th:src="@{/images/footballmanager.svg}" alt="Logo" />
+      <img th:src="@{/images/FMlogo.png}" alt="Logo" />
     </div>
 
     <ul class="menu">
@@ -45,29 +45,6 @@
         </a>
       </li>
 
-      <!-- 🟡 Facilities (chưa có trang → giữ nguyên) -->
-      <li>
-        <a href="#">
-          <i class="fa fa-building"></i>
-          <span th:text="#{sidebar.facilities}">Facilities</span>
-        </a>
-      </li>
-
-      <!-- 🟡 Events (chưa có trang → giữ nguyên) -->
-      <li>
-        <a href="#">
-          <i class="fa fa-calendar-check"></i>
-          <span th:text="#{sidebar.events}">Events</span>
-        </a>
-      </li>
-
-      <!-- 🟡 Calendar (chưa có trang → giữ nguyên) -->
-      <li>
-        <a href="#">
-          <i class="fa fa-users"></i>
-          <span th:text="#{sidebar.calendar}">Calendar</span>
-        </a>
-      </li>
 
       <!-- ✅ Logout (không cần active) -->
       <li>

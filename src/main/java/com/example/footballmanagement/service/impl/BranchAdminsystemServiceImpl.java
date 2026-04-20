@@ -6,6 +6,8 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.footballmanagement.dto.request.BranchUpdateRequest;
+import com.example.footballmanagement.dto.response.BranchResponseDto;
 import com.example.footballmanagement.entity.Branch;
 import com.example.footballmanagement.entity.User;
 import com.example.footballmanagement.entity.enums.UserRole;
@@ -80,4 +82,55 @@ public class BranchAdminsystemServiceImpl implements BranchAdminsystemService {
     public List<Branch> getAvailableBranches() {
         return branchRepository.findAvailableForAssign();
     }
+
+    @Override
+@Transactional
+public BranchResponseDto updateBranch(UUID adminSystemId, UUID branchId, BranchUpdateRequest request) {
+
+    // 1) validate admin system
+    User adminSystem = userRepository.findById(adminSystemId)
+            .orElseThrow(() -> new ApiException(ErrorCode.USER_NOT_FOUND));
+
+    if (adminSystem.getRole() != UserRole.ADMIN_SYSTEM) {
+        throw new ApiException(ErrorCode.ROLE_FORBIDDEN);
+    }
+
+    // 2) validate request
+    if (request.getName() == null || request.getName().isBlank()) {
+        throw new ApiException(ErrorCode.INVALID_BRANCH_NAME);
+    }
+
+    if (request.getLocation() == null || request.getLocation().isBlank()) {
+        throw new ApiException(ErrorCode.INVALID_BRANCH_LOCATION);
+    }
+
+    // 3) validate branch
+    Branch branch = branchRepository.findById(branchId)
+            .orElseThrow(() -> new ApiException(ErrorCode.BRANCH_NOT_FOUND));
+
+    // 4) check duplicated name
+    boolean duplicatedName = branchRepository.existsByNameIgnoreCaseAndIdNot(
+            request.getName().trim(),
+            branchId
+    );
+
+    if (duplicatedName) {
+        throw new ApiException(ErrorCode.BRANCH_NAME_ALREADY_EXISTS);
+    }
+
+    // 5) update fields
+    branch.setName(request.getName().trim());
+    branch.setLocation(request.getLocation().trim());
+    branch.setDescription(request.getDescription());
+
+    Branch saved = branchRepository.save(branch);
+
+    // 6) response
+    return BranchResponseDto.builder()
+            .id(saved.getId())
+            .name(saved.getName())
+            .location(saved.getLocation())
+            .description(saved.getDescription())
+            .build();
+}
 }

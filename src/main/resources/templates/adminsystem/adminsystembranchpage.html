@@ -44,7 +44,7 @@
             <form id="createBranchForm">
                 <div class="modal-header">
                     <h5 class="modal-title" th:text="#{branch1.modal.title}">Tạo chi nhánh mới</h5>
-                    <button class="btn-close" data-bs-dismiss="modal"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
 
                 <div class="modal-body">
@@ -77,6 +77,49 @@
     </div>
 </div>
 
+<!-- MODAL CHỈNH SỬA CHI NHÁNH -->
+<div class="modal fade" id="editBranchModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <form id="editBranchForm">
+                <input type="hidden" id="editBranchId" name="id">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{branch.edit.title}">Edit branch</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <label th:text="#{branch1.name}">Tên chi nhánh</label>
+                    <input id="editBranchName" name="name" class="form-control" required>
+
+                    <label class="mt-2" th:text="#{branch1.location}">Địa chỉ</label>
+                    <input id="editBranchLocation" name="location" class="form-control" required>
+
+                    <label class="mt-2" th:text="#{branch1.description}">Mô tả</label>
+                    <textarea id="editBranchDescription" name="description" class="form-control"></textarea>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal"
+                            th:text="#{button1.cancel}">
+                    </button>
+
+                    <button type="submit"
+                            class="btn btn-primary"
+                            th:text="#{branch.edit.save}">
+                        Save
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
 <!-- MODAL: Tạo sân mới -->
 <div class="modal fade" id="createPitchModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
@@ -90,7 +133,7 @@
                         <span th:text="#{pitch1.add.title}"></span>
                         <span id="pitchBranchName" class="text-primary"></span>
                     </h5>
-                    <button class="btn-close" data-bs-dismiss="modal"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
 
                 <div class="modal-body">
@@ -160,12 +203,30 @@
         chooseFile: '[[#{pitch1.chooseFile}]]',
         noFile: '[[#{pitch1.noFile}]]',
         priceConfigMissing: '[[#{pitch.price.missing}]]',
-        priceConfigMissingShort: '[[#{pitch.price.missing.short}]]'
+        priceConfigMissingShort: '[[#{pitch.price.missing.short}]]',
+
+        editBranch: '[[#{branch.edit}]]',
+        editBranchTitle: '[[#{branch.edit.title}]]',
+        editBranchSave: '[[#{branch.edit.save}]]',
+        branchUpdateSuccess: '[[#{branch.update.success}]]',
+
+        pitchImageChoose: '[[#{pitch.image.choose}]]',
+        pitchImageUpload: '[[#{pitch.image.upload}]]',
+        pitchImageNoFile: '[[#{pitch.image.noFile}]]',
+        pitchImageDelete: '[[#{pitch.image.delete}]]',
+        pitchImageDeleteConfirm: '[[#{pitch.image.deleteConfirm}]]',
+        pitchImageDeleteSuccess: '[[#{pitch.image.deleteSuccess}]]',
+        pitchImageDeleteFail: '[[#{pitch.image.deleteFail}]]',
+        pitchImageUploadSuccess: '[[#{pitch.image.uploadSuccess}]]',
+        pitchImageUploadFail: '[[#{pitch.image.uploadFail}]]',
+        pitchImageUploadEmpty: '[[#{pitch.image.uploadEmpty}]]',
+        pitchImageCover: '[[#{pitch.image.cover}]]'
     };
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/js/adminsystem-branches.js"></script>
+<script th:src="@{/js/auth.js}"></script>
 
 <script>
     loadAdminBranches();
